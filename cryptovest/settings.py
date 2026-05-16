@@ -5,7 +5,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-hordstake-change-in-prod-xk2#9p!@qz')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1', '.onrender.com']
+ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1', 'hordstake-2a9y.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
