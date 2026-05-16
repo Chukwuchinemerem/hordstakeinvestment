@@ -1,0 +1,38 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}My Investments{% endblock %}
+{% block dashboard_content %}
+<div class="space-y-4">
+  {% for inv in investments %}
+  <div class="glass-card p-5">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-blue-500/15 rounded-xl flex items-center justify-center shrink-0"><i class="fa fa-briefcase text-blue-400"></i></div>
+        <div><p class="text-white font-semibold">{{ inv.plan.name|default:"Investment" }}</p><p class="text-slate-500 text-xs">Started {{ inv.started_at|date:"M d, Y H:i" }}</p></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="{% if inv.status == 'active' %}badge-live{% elif inv.status == 'completed' %}badge-success{% else %}badge-danger{% endif %}">{{ inv.status|capfirst }}</span>
+        <div class="text-right"><p class="text-white font-bold">${{ inv.amount|floatformat:2 }}</p><p class="text-emerald-400 text-xs">+{{ inv.plan.roi_percentage }}% ROI</p></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-3 mb-4 text-sm">
+      <div class="bg-navy-800 rounded-lg p-3"><p class="text-slate-500 text-xs">Invested</p><p class="text-white font-semibold">${{ inv.amount|floatformat:2 }}</p></div>
+      <div class="bg-navy-800 rounded-lg p-3"><p class="text-slate-500 text-xs">Profit</p><p class="text-emerald-400 font-semibold">${{ inv.get_expected_profit|floatformat:2 }}</p></div>
+      <div class="bg-navy-800 rounded-lg p-3"><p class="text-slate-500 text-xs">Expected End</p><p class="text-white font-semibold text-xs">{{ inv.expected_end|date:"M d, Y"|default:"—" }}</p></div>
+    </div>
+    {% if inv.status == 'active' %}
+    <div class="flex items-center gap-3">
+      <div class="flex-1 bg-navy-700 rounded-full h-2"><div class="bg-blue-500 h-2 rounded-full" style="width:{{ inv.get_progress_percent }}%"></div></div>
+      <span class="text-slate-400 text-xs">{{ inv.get_progress_percent }}% complete</span>
+    </div>
+    {% endif %}
+  </div>
+  {% empty %}
+  <div class="glass-card p-16 text-center">
+    <i class="fa fa-briefcase text-blue-400 text-4xl mb-4 block opacity-50"></i>
+    <p class="text-slate-400 font-medium mb-2">No investments yet</p>
+    <p class="text-slate-600 text-sm mb-6">Start your first investment to grow your wealth</p>
+    <a href="/dashboard/plans/" class="btn-primary">Browse Plans</a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

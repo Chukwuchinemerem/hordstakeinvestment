@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Sign In — Hordstake{% endblock %}
+{% block body %}
+<div class="min-h-screen bg-navy-900 flex flex-col lg:flex-row">
+  <!-- Left Panel -->
+  <div class="hidden lg:flex lg:w-1/2 bg-navy-800 relative overflow-hidden flex-col justify-between p-12">
+    <div class="absolute inset-0" style="background:linear-gradient(135deg,#060f22 0%,#0a1628 50%,#0f2142 100%);"></div>
+    <div class="absolute inset-0 opacity-30" style="background-image:radial-gradient(circle at 20% 50%,rgba(37,99,235,0.3) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(37,99,235,0.2) 0%,transparent 40%);"></div>
+    <div class="relative z-10">
+      <a href="/" class="flex items-center gap-2.5">
+        <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg"><i class="fa fa-bolt text-white"></i></div>
+        <span class="text-white font-display font-bold text-2xl">HORDSTAKE</span>
+      </a>
+    </div>
+    <div class="relative z-10">
+      <h2 class="text-white font-display font-bold text-4xl leading-tight mb-6">Welcome back,<br/>Investor.</h2>
+      <p class="text-slate-400 text-base mb-10">Access your portfolio, track investments, and withdraw profits — all in one secure dashboard.</p>
+      <div class="space-y-4">
+        <div class="flex items-center gap-3 glass-card p-4 rounded-xl"><div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center shrink-0"><i class="fa fa-shield-halved text-blue-400"></i></div><div><p class="text-white font-semibold text-sm">Bank-Grade Security</p><p class="text-slate-500 text-xs">Your funds are protected 24/7</p></div></div>
+        <div class="flex items-center gap-3 glass-card p-4 rounded-xl"><div class="w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center shrink-0"><i class="fa fa-chart-line text-emerald-400"></i></div><div><p class="text-white font-semibold text-sm">Real-Time Returns</p><p class="text-slate-500 text-xs">Watch your profits grow live</p></div></div>
+        <div class="flex items-center gap-3 glass-card p-4 rounded-xl"><div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center shrink-0"><i class="fa fa-bolt text-blue-400"></i></div><div><p class="text-white font-semibold text-sm">Instant Withdrawals</p><p class="text-slate-500 text-xs">Get your profits within 24 hours</p></div></div>
+      </div>
+    </div>
+    <div class="relative z-10">
+      <div class="flex items-center gap-6 text-sm text-slate-500">
+        <span>50,000+ Investors</span><span>·</span><span>$12M+ Paid</span><span>·</span><span>Since 2019</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel - Form -->
+  <div class="flex-1 flex items-center justify-center px-6 py-12">
+    <div class="w-full max-w-md">
+      <!-- Mobile Logo -->
+      <div class="lg:hidden flex items-center gap-2 mb-10">
+        <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center"><i class="fa fa-bolt text-white text-sm"></i></div>
+        <span class="text-white font-display font-bold text-xl">HORDSTAKE</span>
+      </div>
+
+      <h1 class="text-white font-display font-bold text-3xl mb-2">Sign In</h1>
+      <p class="text-slate-400 text-sm mb-8">Don't have an account? <a href="/auth/register/" class="text-blue-400 hover:text-blue-300 font-medium">Create one free</a></p>
+
+      <form method="POST" class="space-y-5">
+        {% csrf_token %}
+        <div>
+          <label class="block text-slate-300 text-sm font-medium mb-2">Email Address</label>
+          <div class="relative">
+            <i class="fa fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+            <input type="email" name="email" placeholder="you@example.com" class="form-input pl-10" required value="{{ form.email.value|default:'' }}"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-sm font-medium mb-2">Password</label>
+          <div class="relative">
+            <i class="fa fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+            <input type="password" name="password" id="pwdField" placeholder="••••••••" class="form-input pl-10 pr-10" required/>
+            <button type="button" onclick="togglePwd()" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+              <i class="fa fa-eye text-sm" id="eyeIcon"></i>
+            </button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-navy-800 accent-blue-500"/>
+            <span class="text-slate-400 text-sm">Remember me</span>
+          </label>
+          <a href="/auth/password-reset/" class="text-blue-400 hover:text-blue-300 text-sm">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn-primary w-full justify-center py-3.5 text-base">
+          <i class="fa fa-sign-in-alt"></i> Sign In to Dashboard
+        </button>
+      </form>
+
+      <div class="mt-8 pt-6 border-t border-blue-500/10">
+        <p class="text-center text-slate-500 text-xs">By signing in, you agree to our <a href="#" class="text-blue-400">Terms of Service</a> and <a href="#" class="text-blue-400">Privacy Policy</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function togglePwd(){const f=document.getElementById('pwdField');const i=document.getElementById('eyeIcon');if(f.type==='password'){f.type='text';i.className='fa fa-eye-slash text-sm';}else{f.type='password';i.className='fa fa-eye text-sm';}}
+</script>
+{% endblock %}

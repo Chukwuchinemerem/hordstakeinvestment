@@ -1,0 +1,124 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}Content Management{% endblock %}
+{% block admin_content %}
+<div class="space-y-6 max-w-4xl">
+
+  <!-- Site Settings -->
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold text-lg mb-5">Site Settings</h3>
+    <form method="POST" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="update_settings"/>
+      <div>
+        <label class="block text-slate-300 text-xs font-medium mb-1.5">Site Name</label>
+        <input type="text" name="site_name" value="{{ settings_obj.site_name }}" class="form-input"/>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-xs font-medium mb-1.5">WhatsApp Number</label>
+        <input type="text" name="whatsapp_number" value="{{ settings_obj.whatsapp_number }}" placeholder="+12345678900" class="form-input"/>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-xs font-medium mb-1.5">Support Email</label>
+        <input type="email" name="support_email" value="{{ settings_obj.support_email }}" class="form-input"/>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-xs font-medium mb-1.5">Referral Bonus (%)</label>
+        <input type="number" name="referral_bonus_percent" step="0.01" value="{{ settings_obj.referral_bonus_percent }}" class="form-input"/>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-xs font-medium mb-1.5">Min Withdrawal ($)</label>
+        <input type="number" name="min_withdrawal" step="0.01" value="{{ settings_obj.min_withdrawal }}" class="form-input"/>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-xs font-medium mb-1.5">Hero Title</label>
+        <input type="text" name="hero_title" value="{{ settings_obj.hero_title }}" class="form-input"/>
+      </div>
+      <div class="sm:col-span-2 flex justify-end">
+        <button type="submit" class="btn-primary"><i class="fa fa-save mr-2"></i>Save Settings</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Testimonials -->
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold text-lg mb-5">Testimonials</h3>
+    <form method="POST" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 pb-6 border-b border-blue-500/10">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="add_testimonial"/>
+      <div>
+        <label class="block text-slate-300 text-xs mb-1">Name</label>
+        <input type="text" name="t_name" placeholder="User name" class="form-input" required/>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-xs mb-1">Country</label>
+        <input type="text" name="t_country" placeholder="Country" class="form-input" required/>
+      </div>
+      <div class="sm:col-span-2">
+        <label class="block text-slate-300 text-xs mb-1">Message</label>
+        <textarea name="t_message" rows="2" placeholder="Testimonial text..." class="form-input" required></textarea>
+      </div>
+      <div class="sm:col-span-2">
+        <button type="submit" class="btn-primary text-sm py-2"><i class="fa fa-plus mr-1"></i>Add Testimonial</button>
+      </div>
+    </form>
+    <div class="space-y-2">
+      {% for t in testimonials %}
+      <div class="flex items-start justify-between bg-navy-800 p-3 rounded-lg gap-3">
+        <div>
+          <p class="text-white text-sm font-medium">{{ t.name }} — <span class="text-slate-400">{{ t.country }}</span></p>
+          <p class="text-slate-500 text-xs mt-0.5">{{ t.message|truncatechars:80 }}</p>
+        </div>
+        <form method="POST" class="shrink-0">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="delete_testimonial"/>
+          <input type="hidden" name="t_id" value="{{ t.id }}"/>
+          <button type="submit" class="text-red-400 hover:text-red-300 text-xs px-2 py-1">
+            <i class="fa fa-trash"></i>
+          </button>
+        </form>
+      </div>
+      {% empty %}
+      <p class="text-slate-500 text-sm">No testimonials yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- FAQs -->
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold text-lg mb-5">FAQs</h3>
+    <form method="POST" class="space-y-3 mb-6 pb-6 border-b border-blue-500/10">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="add_faq"/>
+      <div>
+        <label class="block text-slate-300 text-xs mb-1">Question</label>
+        <input type="text" name="faq_question" placeholder="Frequently asked question..." class="form-input" required/>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-xs mb-1">Answer</label>
+        <textarea name="faq_answer" rows="2" placeholder="Detailed answer..." class="form-input" required></textarea>
+      </div>
+      <button type="submit" class="btn-primary text-sm py-2"><i class="fa fa-plus mr-1"></i>Add FAQ</button>
+    </form>
+    <div class="space-y-2">
+      {% for faq in faqs %}
+      <div class="flex items-start justify-between bg-navy-800 p-3 rounded-lg gap-3">
+        <div>
+          <p class="text-white text-sm font-medium">{{ faq.question }}</p>
+          <p class="text-slate-500 text-xs mt-0.5">{{ faq.answer|truncatechars:80 }}</p>
+        </div>
+        <form method="POST" class="shrink-0">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="delete_faq"/>
+          <input type="hidden" name="faq_id" value="{{ faq.id }}"/>
+          <button type="submit" class="text-red-400 hover:text-red-300 text-xs px-2 py-1">
+            <i class="fa fa-trash"></i>
+          </button>
+        </form>
+      </div>
+      {% empty %}
+      <p class="text-slate-500 text-sm">No FAQs yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

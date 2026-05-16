@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="flex h-screen overflow-hidden bg-navy-900">
+  <div id="adminOverlay" class="fixed inset-0 bg-black/60 z-40 hidden lg:hidden" onclick="closeAdminSidebar()"></div>
+
+  <aside id="adminSidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-navy-950 border-r border-blue-500/10 flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <div class="flex items-center gap-2.5 px-5 py-5 border-b border-blue-500/10">
+      <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center shrink-0"><i class="fa fa-bolt text-white text-sm"></i></div>
+      <div><span class="text-white font-display font-bold text-base block leading-tight">HORDSTAKE</span><span class="text-blue-400 text-xs">Admin Panel</span></div>
+      <button onclick="closeAdminSidebar()" class="lg:hidden ml-auto text-slate-500 hover:text-white"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="px-5 py-3 border-b border-blue-500/10">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold text-xs">{{ request.user.username|first|upper }}</div>
+        <div><p class="text-white text-xs font-semibold truncate max-w-[140px]">{{ request.user.email }}</p><p class="text-blue-400 text-xs">Administrator</p></div>
+      </div>
+    </div>
+
+    <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto text-sm">
+      <p class="text-slate-600 text-xs font-semibold uppercase tracking-widest px-3 mb-2">Overview</p>
+      <a href="/admin_dashboard/" class="sidebar-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+        <i class="fa fa-gauge w-5 text-center"></i>Dashboard
+      </a>
+      <a href="/admin_dashboard/users/" class="sidebar-link {% if 'admin_user' in request.resolver_match.url_name|default:'' %}active{% endif %}">
+        <i class="fa fa-users w-5 text-center"></i>Users
+      </a>
+
+      <p class="text-slate-600 text-xs font-semibold uppercase tracking-widest px-3 mt-4 mb-2">Finance</p>
+      <a href="/admin_dashboard/deposits/" class="sidebar-link {% if request.resolver_match.url_name == 'admin_deposits' %}active{% endif %}">
+        <i class="fa fa-arrow-down-to-line w-5 text-center"></i>Deposits
+        {% if pending_deposits_count %}<span class="ml-auto bg-yellow-500 text-black text-xs px-1.5 py-0.5 rounded-full font-bold">{{ pending_deposits_count }}</span>{% endif %}
+      </a>
+      <a href="/admin_dashboard/withdrawals/" class="sidebar-link {% if request.resolver_match.url_name == 'admin_withdrawals' %}active{% endif %}">
+        <i class="fa fa-arrow-up-from-line w-5 text-center"></i>Withdrawals
+      </a>
+      <a href="/admin_dashboard/investments/" class="sidebar-link {% if request.resolver_match.url_name == 'admin_investments' %}active{% endif %}">
+        <i class="fa fa-briefcase w-5 text-center"></i>Investments
+      </a>
+
+      <p class="text-slate-600 text-xs font-semibold uppercase tracking-widest px-3 mt-4 mb-2">Management</p>
+      <a href="/admin_dashboard/kyc/" class="sidebar-link {% if 'admin_kyc' in request.resolver_match.url_name|default:'' %}active{% endif %}">
+        <i class="fa fa-id-card w-5 text-center"></i>KYC Verification
+      </a>
+      <a href="/admin_dashboard/broadcast/" class="sidebar-link {% if request.resolver_match.url_name == 'admin_broadcast' %}active{% endif %}">
+        <i class="fa fa-bullhorn w-5 text-center"></i>Broadcast
+      </a>
+      <a href="/admin_dashboard/plans/" class="sidebar-link {% if request.resolver_match.url_name == 'admin_plans' %}active{% endif %}">
+        <i class="fa fa-chart-line w-5 text-center"></i>Inv. Plans
+      </a>
+      <a href="/admin_dashboard/wallets/" class="sidebar-link {% if request.resolver_match.url_name == 'admin_wallets' %}active{% endif %}">
+        <i class="fa fa-wallet w-5 text-center"></i>Wallet Addresses
+      </a>
+      <a href="/admin_dashboard/content/" class="sidebar-link {% if request.resolver_match.url_name == 'admin_content' %}active{% endif %}">
+        <i class="fa fa-pencil w-5 text-center"></i>Content
+      </a>
+    </nav>
+
+    <div class="px-4 py-3 border-t border-blue-500/10 space-y-1">
+      <a href="/" class="sidebar-link text-slate-400"><i class="fa fa-globe w-5 text-center"></i>View Site</a>
+      <a href="/auth/logout/" class="sidebar-link text-red-400 hover:bg-red-500/10 hover:text-red-300"><i class="fa fa-sign-out-alt w-5 text-center"></i>Sign Out</a>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <header class="bg-navy-900 border-b border-blue-500/10 px-4 sm:px-6 py-4 flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-3">
+        <button onclick="openAdminSidebar()" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg hover:bg-blue-500/10 text-slate-400 hover:text-white"><i class="fa fa-bars"></i></button>
+        <div>
+          <h1 class="text-white font-display font-bold text-xl">{% block admin_title %}Admin{% endblock %}</h1>
+          <p class="text-slate-500 text-xs hidden sm:block">{% block admin_subtitle %}Hordstake Control Panel{% endblock %}</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <form action="/admin_dashboard/process-profits/" method="POST">
+          {% csrf_token %}
+          <button type="submit" title="Process matured investments" class="w-9 h-9 flex items-center justify-center rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 transition-colors">
+            <i class="fa fa-rotate text-sm"></i>
+          </button>
+        </form>
+      </div>
+    </header>
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6">
+      {% block admin_content %}{% endblock %}
+    </main>
+  </div>
+</div>
+
+<style>
+.sidebar-link{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;border-radius:.5rem;color:#94a3b8;font-weight:500;transition:all .2s;text-decoration:none;}
+.sidebar-link:hover{background:rgba(37,99,235,.1);color:#e2e8f0;}
+.sidebar-link.active{background:rgba(37,99,235,.15);color:#3b82f6;border-left:2px solid #2563eb;}
+</style>
+<script>
+function openAdminSidebar(){document.getElementById('adminSidebar').classList.remove('-translate-x-full');document.getElementById('adminSidebar').classList.add('translate-x-0');document.getElementById('adminOverlay').classList.remove('hidden');}
+function closeAdminSidebar(){document.getElementById('adminSidebar').classList.add('-translate-x-full');document.getElementById('adminSidebar').classList.remove('translate-x-0');document.getElementById('adminOverlay').classList.add('hidden');}
+</script>
+{% block extra_scripts %}{% endblock %}
+{% endblock %}

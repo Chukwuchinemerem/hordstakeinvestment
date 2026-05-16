@@ -1,0 +1,35 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}Profile Settings{% endblock %}
+{% block dashboard_content %}
+<div class="max-w-2xl space-y-6">
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold text-lg mb-5">Personal Information</h3>
+    <form method="POST" enctype="multipart/form-data" class="space-y-4">
+      {% csrf_token %}
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-slate-300 text-xs font-medium mb-1.5">First Name</label><input type="text" name="first_name" value="{{ request.user.first_name }}" class="form-input"/></div>
+        <div><label class="block text-slate-300 text-xs font-medium mb-1.5">Last Name</label><input type="text" name="last_name" value="{{ request.user.last_name }}" class="form-input"/></div>
+      </div>
+      <div><label class="block text-slate-300 text-xs font-medium mb-1.5">Phone</label><input type="text" name="phone" value="{{ request.user.phone }}" class="form-input"/></div>
+      <div><label class="block text-slate-300 text-xs font-medium mb-1.5">Country</label><input type="text" name="country" value="{{ request.user.country }}" class="form-input"/></div>
+      <button type="submit" class="btn-primary">Save Changes</button>
+    </form>
+  </div>
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold text-lg mb-5">Withdrawal Wallet Addresses</h3>
+    <form method="POST" enctype="multipart/form-data" class="space-y-4">
+      {% csrf_token %}
+      <div><label class="block text-slate-300 text-xs font-medium mb-1.5">BTC Address</label><input type="text" name="btc_wallet" value="{{ request.user.btc_wallet }}" placeholder="Bitcoin wallet address" class="form-input font-mono text-sm"/></div>
+      <div><label class="block text-slate-300 text-xs font-medium mb-1.5">ETH Address</label><input type="text" name="eth_wallet" value="{{ request.user.eth_wallet }}" placeholder="Ethereum wallet address" class="form-input font-mono text-sm"/></div>
+      <div><label class="block text-slate-300 text-xs font-medium mb-1.5">USDT Address (TRC20)</label><input type="text" name="usdt_wallet" value="{{ request.user.usdt_wallet }}" placeholder="USDT TRC20 address" class="form-input font-mono text-sm"/></div>
+      <div><label class="block text-slate-300 text-xs font-medium mb-1.5">TON Address</label><input type="text" name="ton_wallet" value="{{ request.user.ton_wallet }}" placeholder="TON wallet address" class="form-input font-mono text-sm"/></div>
+      <div><label class="block text-slate-300 text-xs font-medium mb-1.5">SOL Address</label><input type="text" name="sol_wallet" value="{{ request.user.sol_wallet }}" placeholder="Solana wallet address" class="form-input font-mono text-sm"/></div>
+      <button type="submit" class="btn-primary">Update Wallets</button>
+    </form>
+  </div>
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold text-lg mb-5">Security</h3>
+    <a href="/dashboard/change-password/" class="btn-outline">Change Password</a>
+  </div>
+</div>
+{% endblock %}

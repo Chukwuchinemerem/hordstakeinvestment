@@ -1,0 +1,26 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}Notifications{% endblock %}
+{% block dashboard_content %}
+<div class="max-w-2xl glass-card overflow-hidden">
+  <div class="p-5 border-b border-blue-500/10"><h3 class="text-white font-semibold">All Notifications</h3></div>
+  {% if notifications %}
+  <div class="divide-y divide-blue-500/5">
+    {% for n in notifications %}
+    <div class="px-5 py-4 {% if not n.is_read %}bg-blue-500/5{% endif %}">
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 bg-blue-500/15 rounded-full flex items-center justify-center shrink-0 mt-0.5"><i class="fa fa-bell text-blue-400 text-sm"></i></div>
+        <div class="flex-1">
+          <p class="text-white font-semibold text-sm">{{ n.title }}</p>
+          <p class="text-slate-400 text-sm mt-1">{{ n.message }}</p>
+          <p class="text-slate-600 text-xs mt-2">{{ n.created_at|date:"M d, Y H:i" }}</p>
+        </div>
+        {% if not n.is_read %}<span class="w-2 h-2 bg-blue-500 rounded-full shrink-0 mt-2"></span>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="py-20 text-center"><i class="fa fa-bell text-blue-400 text-4xl mb-4 block opacity-40"></i><p class="text-slate-400">No notifications</p></div>
+  {% endif %}
+</div>
+{% endblock %}

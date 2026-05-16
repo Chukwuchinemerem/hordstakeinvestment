@@ -1,0 +1,116 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}KYC Review — {{ submission.user.email }}{% endblock %}
+{% block admin_content %}
+<div class="max-w-4xl space-y-6">
+
+  <!-- Status Banner -->
+  <div class="glass-card p-5 flex items-center gap-4">
+    <div class="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl shrink-0">
+      {{ submission.user.email|first|upper }}
+    </div>
+    <div class="flex-1">
+      <p class="text-white font-display font-bold text-xl">{{ submission.full_name }}</p>
+      <p class="text-slate-400 text-sm">{{ submission.user.email }} · Submitted {{ submission.submitted_at|date:"M d, Y H:i" }}</p>
+    </div>
+    <span class="text-lg {% if submission.status == 'approved' %}badge-success{% elif submission.status == 'pending' %}badge-pending{% else %}badge-danger{% endif %} px-4 py-2">
+      {% if submission.status == 'approved' %}🟢 Verified{% elif submission.status == 'pending' %}🟡 Pending{% else %}🔴 Rejected{% endif %}
+    </span>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Personal Info -->
+    <div class="glass-card p-6">
+      <h3 class="text-white font-semibold mb-4 flex items-center gap-2"><i class="fa fa-user text-blue-400"></i> Personal Information</h3>
+      <div class="space-y-2.5 text-sm">
+        <div class="flex justify-between"><span class="text-slate-400">Full Name</span><span class="text-white font-medium">{{ submission.full_name }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Date of Birth</span><span class="text-white">{{ submission.date_of_birth }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Nationality</span><span class="text-white">{{ submission.nationality }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Phone</span><span class="text-white">{{ submission.phone_number }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Gender</span><span class="text-white capitalize">{{ submission.gender|default:"—" }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Occupation</span><span class="text-white">{{ submission.occupation|default:"—" }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Employer</span><span class="text-white">{{ submission.employer_name|default:"—" }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Annual Income</span><span class="text-white">{{ submission.annual_income|default:"—" }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Source of Funds</span><span class="text-white">{{ submission.source_of_funds|default:"—" }}</span></div>
+      </div>
+    </div>
+
+    <!-- Address & ID -->
+    <div class="glass-card p-6">
+      <h3 class="text-white font-semibold mb-4 flex items-center gap-2"><i class="fa fa-location-dot text-blue-400"></i> Address & ID</h3>
+      <div class="space-y-2.5 text-sm">
+        <div class="flex justify-between"><span class="text-slate-400">Address</span><span class="text-white text-right max-w-[200px]">{{ submission.address_line1 }}{% if submission.address_line2 %}, {{ submission.address_line2 }}{% endif %}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">City/State/Zip</span><span class="text-white">{{ submission.city }}, {{ submission.state }} {{ submission.zip_code }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Country</span><span class="text-white">{{ submission.country }}</span></div>
+        {% if submission.ssn %}<div class="flex justify-between"><span class="text-slate-400">SSN</span><span class="text-white font-mono">***-**-{{ submission.ssn|slice:"-4:" }}</span></div>{% endif %}
+        <div class="border-t border-blue-500/10 pt-2.5 mt-2.5"></div>
+        <div class="flex justify-between"><span class="text-slate-400">ID Type</span><span class="text-white capitalize">{{ submission.id_type|replace:"_":" " }}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">ID Number</span><span class="text-white font-mono">{{ submission.id_number }}</span></div>
+        {% if submission.id_expiry %}<div class="flex justify-between"><span class="text-slate-400">ID Expiry</span><span class="text-white">{{ submission.id_expiry }}</span></div>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Documents -->
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold mb-5 flex items-center gap-2"><i class="fa fa-file-image text-blue-400"></i> Uploaded Documents</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {% if submission.id_front %}
+      <div>
+        <p class="text-slate-400 text-xs mb-2 uppercase tracking-wide">ID Front</p>
+        <a href="{{ submission.id_front.url }}" target="_blank">
+          <img src="{{ submission.id_front.url }}" class="w-full h-40 object-cover rounded-xl border border-blue-500/20 hover:border-blue-500 transition-colors cursor-pointer"/>
+        </a>
+      </div>
+      {% endif %}
+      {% if submission.id_back %}
+      <div>
+        <p class="text-slate-400 text-xs mb-2 uppercase tracking-wide">ID Back</p>
+        <a href="{{ submission.id_back.url }}" target="_blank">
+          <img src="{{ submission.id_back.url }}" class="w-full h-40 object-cover rounded-xl border border-blue-500/20 hover:border-blue-500 transition-colors cursor-pointer"/>
+        </a>
+      </div>
+      {% endif %}
+      {% if submission.selfie %}
+      <div>
+        <p class="text-slate-400 text-xs mb-2 uppercase tracking-wide">Selfie with ID</p>
+        <a href="{{ submission.selfie.url }}" target="_blank">
+          <img src="{{ submission.selfie.url }}" class="w-full h-40 object-cover rounded-xl border border-blue-500/20 hover:border-blue-500 transition-colors cursor-pointer"/>
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Admin Review -->
+  {% if submission.status == 'pending' %}
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <form method="POST" class="glass-card p-6">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="approve"/>
+      <h3 class="text-emerald-400 font-semibold mb-3"><i class="fa fa-check-circle mr-2"></i>Approve KYC</h3>
+      <textarea name="note" rows="2" placeholder="Optional approval note..." class="form-input mb-4 text-sm"></textarea>
+      <button type="submit" class="w-full py-3 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-400 rounded-xl font-semibold transition-all">
+        ✓ Approve & Verify User
+      </button>
+    </form>
+    <form method="POST" class="glass-card p-6">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="reject"/>
+      <h3 class="text-red-400 font-semibold mb-3"><i class="fa fa-times-circle mr-2"></i>Reject KYC</h3>
+      <textarea name="note" rows="2" placeholder="Reason for rejection (required)..." class="form-input mb-4 text-sm" required></textarea>
+      <button type="submit" class="w-full py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-400 rounded-xl font-semibold transition-all">
+        ✗ Reject KYC
+      </button>
+    </form>
+  </div>
+  {% else %}
+  <div class="glass-card p-5 border {% if submission.status == 'approved' %}border-emerald-500/30{% else %}border-red-500/30{% endif %}">
+    <p class="text-sm font-semibold {% if submission.status == 'approved' %}text-emerald-400{% else %}text-red-400{% endif %}">
+      {% if submission.status == 'approved' %}✓ Approved{% else %}✗ Rejected{% endif %}
+      {% if submission.reviewed_at %} on {{ submission.reviewed_at|date:"M d, Y" }}{% endif %}
+    </p>
+    {% if submission.admin_note %}<p class="text-slate-400 text-sm mt-1">Note: {{ submission.admin_note }}</p>{% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}Investment Plans{% endblock %}
+{% block admin_content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <!-- Create Plan Form -->
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold mb-5">Create New Plan</h3>
+    <form method="POST" class="space-y-3">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create"/>
+      <div>
+        <label class="block text-slate-300 text-xs font-medium mb-1">Plan Name</label>
+        <input type="text" name="name" placeholder="e.g. Gold Plan" class="form-input" required/>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-xs font-medium mb-1">Description</label>
+        <textarea name="description" rows="2" placeholder="Brief description..." class="form-input"></textarea>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-xs font-medium mb-1">ROI Percentage (%)</label>
+        <input type="number" name="roi_percentage" step="0.01" min="0.01" placeholder="e.g. 15.00" class="form-input" required/>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1">Duration</label>
+          <input type="number" name="duration" min="1" placeholder="e.g. 30" class="form-input" required/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1">Unit</label>
+          <select name="duration_unit" class="form-select">
+            <option value="hours">Hours</option>
+            <option value="days" selected>Days</option>
+            <option value="weeks">Weeks</option>
+            <option value="months">Months</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1">Min Deposit ($)</label>
+          <input type="number" name="min_deposit" step="0.01" min="1" placeholder="100" class="form-input" required/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1">Max Deposit ($)</label>
+          <input type="number" name="max_deposit" step="0.01" placeholder="50000" class="form-input" required/>
+        </div>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-xs font-medium mb-1">Accent Color</label>
+        <input type="color" name="color" value="#2563eb" class="form-input h-10 cursor-pointer p-1"/>
+      </div>
+      <label class="flex items-center gap-2 cursor-pointer pt-1">
+        <input type="checkbox" name="is_featured" class="w-4 h-4 accent-blue-500"/>
+        <span class="text-slate-300 text-sm">Mark as Featured</span>
+      </label>
+      <button type="submit" class="btn-primary w-full justify-center mt-2">
+        <i class="fa fa-plus mr-1"></i>Create Plan
+      </button>
+    </form>
+  </div>
+
+  <!-- Plans List -->
+  <div class="lg:col-span-2 space-y-4">
+    {% for plan in plans %}
+    <div class="glass-card p-5">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:{{ plan.color }}25; border:1px solid {{ plan.color }}40;">
+            <i class="fa fa-{{ plan.icon }} text-lg" style="color:{{ plan.color }}"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <p class="text-white font-bold text-lg">{{ plan.name }}</p>
+              {% if plan.is_featured %}<span class="badge-live text-xs">FEATURED</span>{% endif %}
+            </div>
+            <p class="text-slate-500 text-xs">{{ plan.roi_percentage }}% ROI · {{ plan.duration }} {{ plan.get_duration_unit_display }}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap justify-end">
+          <span class="{% if plan.is_active %}badge-success{% else %}badge-danger{% endif %}">
+            {% if plan.is_active %}Active{% else %}Inactive{% endif %}
+          </span>
+          <form method="POST" style="display:inline">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="toggle"/>
+            <input type="hidden" name="plan_id" value="{{ plan.id }}"/>
+            <button type="submit" class="btn-outline text-xs py-1.5 px-3">Toggle</button>
+          </form>
+          <form method="POST" style="display:inline" onsubmit="return confirm('Delete plan {{ plan.name }}?')">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="delete"/>
+            <input type="hidden" name="plan_id" value="{{ plan.id }}"/>
+            <button type="submit" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 text-xs py-1.5 px-3 rounded-lg font-medium transition-colors">
+              <i class="fa fa-trash"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="grid grid-cols-4 gap-2 text-xs">
+        <div class="bg-navy-800 rounded-lg p-2.5 text-center"><p class="text-slate-500 mb-1">ROI</p><p class="text-emerald-400 font-bold text-base">{{ plan.roi_percentage }}%</p></div>
+        <div class="bg-navy-800 rounded-lg p-2.5 text-center"><p class="text-slate-500 mb-1">Min</p><p class="text-white font-bold">${{ plan.min_deposit }}</p></div>
+        <div class="bg-navy-800 rounded-lg p-2.5 text-center"><p class="text-slate-500 mb-1">Max</p><p class="text-white font-bold">${{ plan.max_deposit }}</p></div>
+        <div class="bg-navy-800 rounded-lg p-2.5 text-center"><p class="text-slate-500 mb-1">Duration</p><p class="text-white font-bold">{{ plan.duration }}{{ plan.duration_unit|slice:":1" }}</p></div>
+      </div>
+      {% if plan.description %}<p class="text-slate-500 text-xs mt-3 px-1">{{ plan.description }}</p>{% endif %}
+    </div>
+    {% empty %}
+    <div class="glass-card p-16 text-center">
+      <i class="fa fa-chart-line text-blue-400 text-4xl mb-4 block opacity-40"></i>
+      <p class="text-slate-400">No investment plans yet. Create your first plan.</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

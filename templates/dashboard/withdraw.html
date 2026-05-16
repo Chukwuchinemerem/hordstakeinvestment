@@ -1,0 +1,48 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}Withdraw Funds{% endblock %}
+{% block dashboard_content %}
+<div class="max-w-xl mx-auto">
+  <div class="glass-card p-4 mb-5 flex items-center gap-3 border border-blue-500/20 rounded-xl">
+    <div class="w-10 h-10 bg-blue-500/15 rounded-lg flex items-center justify-center shrink-0"><i class="fa fa-wallet text-blue-400"></i></div>
+    <div><p class="text-slate-400 text-xs">Available Balance</p><p class="text-white font-display font-bold text-2xl">${{ request.user.wallet_balance|floatformat:2 }}</p></div>
+  </div>
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold text-lg mb-5">Request Withdrawal</h3>
+    <form method="POST" class="space-y-5">
+      {% csrf_token %}
+      <div>
+        <label class="block text-slate-300 text-sm font-medium mb-2">Withdrawal Amount (USD)</label>
+        <div class="relative"><span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+        <input type="number" name="amount" placeholder="0.00" step="0.01" min="10" max="{{ request.user.wallet_balance }}" class="form-input pl-8" required/></div>
+        <p class="text-slate-500 text-xs mt-1">Minimum withdrawal: $10.00</p>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-sm font-medium mb-2">Cryptocurrency</label>
+        <select name="crypto" class="form-select">
+          <option value="BTC">Bitcoin (BTC)</option>
+          <option value="ETH">Ethereum (ETH)</option>
+          <option value="USDT">Tether USDT (TRC20)</option>
+          <option value="TON">TON</option>
+          <option value="SOL">Solana (SOL)</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-sm font-medium mb-2">Your Wallet Address</label>
+        <input type="text" name="wallet_address" placeholder="Enter your receiving wallet address" class="form-input font-mono text-sm" required/>
+        <p class="text-slate-500 text-xs mt-1">Double-check your address — transactions are irreversible</p>
+      </div>
+      <div class="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
+        <p class="text-yellow-300 text-sm font-semibold mb-1"><i class="fa fa-triangle-exclamation mr-1"></i>Please read before withdrawing</p>
+        <ul class="text-slate-400 text-xs space-y-1">
+          <li>• Withdrawals are processed within 24 hours</li>
+          <li>• Funds must have cleared (not pending) to withdraw</li>
+          <li>• Ensure your address matches the selected crypto network</li>
+        </ul>
+      </div>
+      <button type="submit" class="btn-primary w-full justify-center py-3.5">
+        <i class="fa fa-arrow-up-from-line"></i> Submit Withdrawal Request
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

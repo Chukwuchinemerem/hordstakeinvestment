@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>{% block title %}Hordstake — Smart Crypto Investment{% endblock %}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{
+  navy:{'950':'#030b1a','900':'#060f22','850':'#081229','800':'#0a1628','750':'#0d1c35','700':'#0f2142','600':'#132849','500':'#1a3460'},
+  blue:{'500':'#2563eb','400':'#3b82f6','300':'#60a5fa','200':'#93c5fd','glow':'rgba(37,99,235,0.4)'},
+  gold:{'500':'#f59e0b','400':'#fbbf24'},
+},fontFamily:{display:["'Sora'","sans-serif"],body:["'Inter'","sans-serif"],mono:["'JetBrains Mono'","monospace"]}}}};
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*{font-family:'Inter',sans-serif;box-sizing:border-box;}
+h1,h2,h3,h4,.font-display{font-family:'Sora',sans-serif;}
+body{background:#060f22;color:#e2e8f0;overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:#0a1628;}
+::-webkit-scrollbar-thumb{background:#2563eb;border-radius:3px;}
+.glass{background:rgba(10,22,40,0.85);backdrop-filter:blur(16px);border:1px solid rgba(37,99,235,0.15);}
+.glass-card{background:rgba(13,28,53,0.9);border:1px solid rgba(37,99,235,0.2);border-radius:12px;}
+.btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;padding:.65rem 1.75rem;border-radius:8px;font-weight:600;font-size:.9rem;transition:all .3s;display:inline-flex;align-items:center;gap:.5rem;border:none;cursor:pointer;}
+.btn-primary:hover{background:linear-gradient(135deg,#3b82f6,#2563eb);box-shadow:0 0 24px rgba(37,99,235,0.5);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:#3b82f6;padding:.65rem 1.75rem;border-radius:8px;font-weight:600;font-size:.9rem;border:1px solid #2563eb;transition:all .3s;display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;}
+.btn-outline:hover{background:rgba(37,99,235,0.1);box-shadow:0 0 20px rgba(37,99,235,0.3);}
+.form-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(37,99,235,0.25);color:#e2e8f0;padding:.75rem 1rem;border-radius:8px;transition:all .3s;outline:none;font-size:.9rem;}
+.form-input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.15);}
+.form-input::placeholder{color:#475569;}
+.form-select{width:100%;background:#0a1628;border:1px solid rgba(37,99,235,0.25);color:#e2e8f0;padding:.75rem 1rem;border-radius:8px;outline:none;font-size:.9rem;}
+.ticker-wrap{overflow:hidden;white-space:nowrap;}
+.ticker-move{display:inline-block;animation:ticker 80s linear infinite;}
+.ticker-move:hover{animation-play-state:paused;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.partners-track{display:flex;animation:slide 35s linear infinite;}
+@keyframes slide{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.pulse-green::before{content:'';display:inline-block;width:8px;height:8px;background:#10b981;border-radius:50%;margin-right:5px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.stat-card{background:linear-gradient(135deg,#0d1c35,#0a1628);border:1px solid rgba(37,99,235,0.2);border-radius:12px;padding:1.25rem;transition:all .3s;}
+.stat-card:hover{border-color:#2563eb;box-shadow:0 0 24px rgba(37,99,235,0.2);}
+.plan-card{background:linear-gradient(145deg,#0d1c35,#081229);border:1px solid rgba(37,99,235,0.2);border-radius:16px;transition:all .35s;overflow:hidden;}
+.plan-card:hover{transform:translateY(-6px);border-color:#2563eb;box-shadow:0 12px 40px rgba(37,99,235,0.3);}
+.plan-card.featured{border-color:#2563eb;box-shadow:0 0 30px rgba(37,99,235,0.25);}
+.badge-live{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#6ee7b7;font-size:.7rem;padding:.2rem .6rem;border-radius:20px;}
+.badge-pending{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:#fcd34d;font-size:.7rem;padding:.2rem .6rem;border-radius:20px;}
+.badge-success{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#6ee7b7;font-size:.7rem;padding:.2rem .6rem;border-radius:20px;}
+.badge-danger{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#fca5a5;font-size:.7rem;padding:.2rem .6rem;border-radius:20px;}
+.live-activity{background:#fff;border-radius:12px;padding:.85rem 1rem;box-shadow:0 4px 20px rgba(0,0,0,.15);color:#1e293b;position:fixed;bottom:6rem;right:1rem;width:260px;z-index:100;animation:slideUp .5s ease;display:none;}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.alert{padding:.75rem 1rem;border-radius:8px;margin-bottom:.75rem;font-size:.875rem;display:flex;align-items:center;justify-content:space-between;}
+.alert-success{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#6ee7b7;}
+.alert-error{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+.alert-warning{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:#fcd34d;}
+.alert-info{background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.3);color:#93c5fd;}
+</style>
+{% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="bg-navy-950 border-b border-blue-500/10" style="min-height:36px;">
+  <div class="max-w-screen-2xl mx-auto px-4 flex items-center justify-between h-9">
+    <div class="flex items-center gap-2 shrink-0">
+      <i class="fa fa-globe text-blue-400 text-xs"></i>
+      <select onchange="changeLanguage(this.value)" class="bg-transparent text-slate-400 text-xs border-none outline-none cursor-pointer">
+        <option value="en">🇬🇧 English</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="zh">🇨🇳 中文</option>
+        <option value="ar">🇸🇦 العربية</option>
+        <option value="ru">🇷🇺 Русский</option>
+        <option value="pt">🇧🇷 Português</option>
+      </select>
+    </div>
+    <div class="ticker-wrap flex-1 mx-3 overflow-hidden">
+      <div class="ticker-move text-xs font-mono" id="cryptoTicker">
+        <span class="text-slate-500">Fetching live prices...</span>
+      </div>
+    </div>
+    <div class="shrink-0 flex items-center gap-1 text-xs text-emerald-400 font-medium">
+      <span class="pulse-green"></span><span class="hidden sm:inline">LIVE</span>
+    </div>
+  </div>
+</div>
+
+{% if messages %}
+<div class="fixed top-12 right-4 z-[9999] space-y-2 w-80" id="msgBox">
+  {% for m in messages %}
+  <div class="alert alert-{{ m.tags }}">
+    <span>{{ m }}</span>
+    <button onclick="this.parentElement.remove()" class="ml-2 opacity-60 hover:opacity-100 text-lg leading-none">×</button>
+  </div>
+  {% endfor %}
+</div>
+<script>setTimeout(()=>{const b=document.getElementById('msgBox');if(b){b.style.opacity='0';b.style.transition='opacity .5s';setTimeout(()=>b.remove(),500);}},5000);</script>
+{% endif %}
+
+{% block body %}{% endblock %}
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/{{ site_settings.whatsapp_number|default:'+1234567890' }}" target="_blank"
+   class="fixed bottom-20 right-4 z-50 w-14 h-14 bg-emerald-500 hover:bg-emerald-400 rounded-full flex items-center justify-center shadow-lg hover:shadow-emerald-500/40 hover:shadow-xl transition-all duration-300 group">
+  <i class="fab fa-whatsapp text-2xl text-white"></i>
+  <span class="absolute right-16 bg-white text-gray-800 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Live Support</span>
+</a>
+
+<!-- Back to Top -->
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+  class="fixed bottom-4 right-4 z-50 w-10 h-10 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg transition-all duration-300 opacity-0 pointer-events-none">
+  <i class="fa fa-arrow-up text-sm"></i>
+</button>
+
+<!-- Live Activity Popup -->
+<div class="live-activity" id="liveActivity">
+  <div class="flex items-start gap-3">
+    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+      <i class="fa fa-check-circle text-blue-600 text-sm"></i>
+    </div>
+    <div>
+      <p class="text-xs font-semibold text-gray-800 flex items-center gap-1.5"><span class="w-2 h-2 bg-emerald-500 rounded-full inline-block"></span> Live Activity</p>
+      <p class="text-xs text-gray-600 mt-0.5" id="liveMsg">Someone from USA invested $5,000</p>
+      <p class="text-xs text-gray-400 mt-0.5">Just now</p>
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('scroll',()=>{
+  const b=document.getElementById('btt');
+  if(window.scrollY>300){b.classList.remove('opacity-0','pointer-events-none');b.classList.add('opacity-100');}
+  else{b.classList.add('opacity-0','pointer-events-none');b.classList.remove('opacity-100');}
+});
+function changeLanguage(l){if(l!=='en'){window.location.href=`https://translate.google.com/translate?sl=en&tl=${l}&u=${encodeURIComponent(window.location.href)}`;}}
+
+// Live crypto ticker
+async function loadTicker(){
+  try{
+    const r=await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1');
+    const d=await r.json();
+    if(!d||!d.length)throw new Error();
+    let h='';
+    for(let i=0;i<2;i++){
+      d.forEach(c=>{
+        const chg=c.price_change_percentage_24h||0;
+        const col=chg>=0?'#10b981':'#ef4444';
+        const arr=chg>=0?'▲':'▼';
+        h+=`<span style="margin-right:20px;"><img src="${c.image}" style="width:12px;height:12px;border-radius:50%;display:inline;vertical-align:middle;margin-right:3px;" onerror="this.style.display='none'"/><span style="color:#e2e8f0;font-weight:600;">${c.symbol.toUpperCase()}</span> <span style="color:#cbd5e1;">$${Number(c.current_price).toLocaleString()}</span> <span style="color:${col};font-size:.7rem;">${arr}${Math.abs(chg).toFixed(2)}%</span><span style="color:#334155;margin-left:16px;">|</span></span>`;
+      });
+    }
+    document.getElementById('cryptoTicker').innerHTML=h;
+  }catch(e){
+    const fallback='BTC $67,420 ▲2.1% | ETH $3,280 ▲1.4% | BNB $412 ▲0.8% | SOL $165 ▲3.2% | ADA $0.62 ▲1.1% | XRP $0.54 ▼0.3% | DOGE $0.18 ▲4.2% | DOT $9.80 ▲1.9% | AVAX $38.2 ▲2.3% | MATIC $0.89 ▲1.7%';
+    document.getElementById('cryptoTicker').innerHTML=`<span style="color:#94a3b8;">${fallback} | ${fallback}</span>`;
+  }
+}
+loadTicker();setInterval(loadTicker,60000);
+
+// Live activity popups
+const activities=[
+  'Someone from United States invested $10,000 in Gold Plan',
+  'User from Germany withdrew $3,500 profit',
+  'New investor from Canada joined — $5,000 deposit',
+  'Someone from UK earned $1,200 ROI today',
+  'User from Norway activated a $2,500 investment',
+  'Investor from Australia withdrew $8,000',
+  'Someone from Brazil invested $15,000 in Platinum Plan',
+  'New member from France deposited $4,000',
+];
+function showLiveActivity(){
+  const el=document.getElementById('liveActivity');
+  const msg=document.getElementById('liveMsg');
+  msg.textContent=activities[Math.floor(Math.random()*activities.length)];
+  el.style.display='block';
+  setTimeout(()=>{el.style.display='none';},5000);
+}
+setTimeout(showLiveActivity,3000);
+setInterval(showLiveActivity,18000);
+</script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

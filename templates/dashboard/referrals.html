@@ -1,0 +1,41 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}Referral Program{% endblock %}
+{% block dashboard_content %}
+<div class="max-w-3xl">
+  <!-- Ref Link -->
+  <div class="glass-card p-6 mb-6">
+    <h3 class="text-white font-semibold text-lg mb-1">Your Referral Link</h3>
+    <p class="text-slate-400 text-sm mb-5">Share your unique link and earn commission on every deposit your referrals make.</p>
+    <div class="flex gap-2">
+      <input id="refLink" type="text" value="{{ referral_link }}" class="form-input font-mono text-sm flex-1" readonly/>
+      <button onclick="copyRef()" class="btn-primary shrink-0"><i class="fa fa-copy"></i><span class="hidden sm:inline">Copy</span></button>
+    </div>
+  </div>
+  <!-- Stats -->
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="stat-card text-center"><p class="text-slate-400 text-xs mb-2">Total Referrals</p><p class="text-white font-display font-bold text-3xl">{{ referrals|length }}</p></div>
+    <div class="stat-card text-center"><p class="text-slate-400 text-xs mb-2">Total Earnings</p><p class="text-emerald-400 font-display font-bold text-3xl">${{ request.user.referral_earnings|floatformat:2 }}</p></div>
+    <div class="stat-card text-center"><p class="text-slate-400 text-xs mb-2">Commission Rate</p><p class="text-blue-400 font-display font-bold text-3xl">5%</p></div>
+  </div>
+  <!-- Referral list -->
+  <div class="glass-card overflow-hidden">
+    <div class="p-5 border-b border-blue-500/10"><h3 class="text-white font-semibold">Your Referrals</h3></div>
+    {% if referrals %}
+    <div class="divide-y divide-blue-500/5">
+      {% for ref in referrals %}
+      <div class="px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">{{ ref.referred.email|first|upper }}</div>
+          <div><p class="text-white font-medium text-sm">{{ ref.referred.get_full_name|default:ref.referred.username }}</p><p class="text-slate-500 text-xs">Joined {{ ref.created_at|date:"M d, Y" }}</p></div>
+        </div>
+        <div class="text-right"><p class="text-emerald-400 font-semibold text-sm">${{ ref.bonus_amount|floatformat:2 }}</p><p class="text-slate-500 text-xs">Earned</p></div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="py-16 text-center"><i class="fa fa-users text-blue-400 text-4xl mb-4 block opacity-40"></i><p class="text-slate-400">No referrals yet. Share your link to start earning!</p></div>
+    {% endif %}
+  </div>
+</div>
+<script>function copyRef(){navigator.clipboard.writeText(document.getElementById('refLink').value).then(()=>{const b=event.currentTarget;b.innerHTML='<i class="fa fa-check"></i> Copied!';setTimeout(()=>{b.innerHTML='<i class="fa fa-copy"></i><span class="hidden sm:inline">Copy</span>';},2000);});}</script>
+{% endblock %}

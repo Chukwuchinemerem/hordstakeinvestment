@@ -1,0 +1,158 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load humanize %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Welcome back, {{ request.user.first_name|default:request.user.username }} 👋{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- KYC Alert Banner -->
+{% if not request.user.kyc_verified %}
+  {% if kyc_status == 'pending' %}
+  <div class="flex items-center gap-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl px-5 py-3.5 mb-5">
+    <span class="text-xl shrink-0">🟡</span>
+    <div class="flex-1 min-w-0"><p class="text-yellow-300 font-semibold text-sm">KYC Pending Review</p><p class="text-slate-400 text-xs">Your documents are under review. Usually completed within 24 hours.</p></div>
+    <a href="/kyc/status/" class="shrink-0 text-yellow-400 text-xs border border-yellow-500/40 px-3 py-1.5 rounded-lg hover:bg-yellow-500/15 transition-colors whitespace-nowrap">View Status →</a>
+  </div>
+  {% elif kyc_status == 'rejected' %}
+  <div class="flex items-center gap-3 bg-red-500/10 border border-red-500/30 rounded-xl px-5 py-3.5 mb-5">
+    <span class="text-xl shrink-0">🔴</span>
+    <div class="flex-1 min-w-0"><p class="text-red-300 font-semibold text-sm">KYC Rejected — Action Required</p><p class="text-slate-400 text-xs">Please resubmit with the correct documents.</p></div>
+    <a href="/kyc/submit/" class="shrink-0 text-red-400 text-xs border border-red-500/40 px-3 py-1.5 rounded-lg hover:bg-red-500/15 transition-colors whitespace-nowrap">Resubmit →</a>
+  </div>
+  {% else %}
+  <div class="flex items-center gap-3 bg-blue-500/10 border border-blue-500/20 rounded-xl px-5 py-3.5 mb-5">
+    <i class="fa fa-id-card text-blue-400 text-xl shrink-0"></i>
+    <div class="flex-1 min-w-0"><p class="text-blue-300 font-semibold text-sm">Complete KYC to unlock full access</p><p class="text-slate-400 text-xs">Verify your identity to enable all features including higher withdrawal limits.</p></div>
+    <a href="/kyc/submit/" class="shrink-0 btn-primary text-xs py-1.5 px-4 whitespace-nowrap">Verify Now →</a>
+  </div>
+  {% endif %}
+{% endif %}
+
+<!-- Stats -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div class="stat-card">
+    <div class="flex items-center justify-between mb-3"><p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Wallet Balance</p><div class="w-8 h-8 bg-blue-500/15 rounded-lg flex items-center justify-center"><i class="fa fa-wallet text-blue-400 text-sm"></i></div></div>
+    <p class="text-white font-display font-bold text-2xl">${{ request.user.wallet_balance|floatformat:2|intcomma }}</p>
+    <p class="text-slate-500 text-xs mt-1">Available to invest</p>
+  </div>
+  <div class="stat-card">
+    <div class="flex items-center justify-between mb-3"><p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Deposited</p><div class="w-8 h-8 bg-emerald-500/15 rounded-lg flex items-center justify-center"><i class="fa fa-arrow-down-to-line text-emerald-400 text-sm"></i></div></div>
+    <p class="text-white font-display font-bold text-2xl">${{ request.user.total_deposited|floatformat:2|intcomma }}</p>
+    <p class="text-slate-500 text-xs mt-1">Total funded</p>
+  </div>
+  <div class="stat-card">
+    <div class="flex items-center justify-between mb-3"><p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Profit</p><div class="w-8 h-8 bg-yellow-500/15 rounded-lg flex items-center justify-center"><i class="fa fa-coins text-yellow-400 text-sm"></i></div></div>
+    <p class="text-emerald-400 font-display font-bold text-2xl">${{ request.user.total_profit|floatformat:2|intcomma }}</p>
+    <p class="text-slate-500 text-xs mt-1">Earned to date</p>
+  </div>
+  <div class="stat-card">
+    <div class="flex items-center justify-between mb-3"><p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Withdrawn</p><div class="w-8 h-8 bg-purple-500/15 rounded-lg flex items-center justify-center"><i class="fa fa-arrow-up-from-line text-purple-400 text-sm"></i></div></div>
+    <p class="text-white font-display font-bold text-2xl">${{ request.user.total_withdrawn|floatformat:2|intcomma }}</p>
+    <p class="text-slate-500 text-xs mt-1">Withdrawn total</p>
+  </div>
+</div>
+
+<!-- Chart + Quick Actions -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+  <div class="lg:col-span-2 glass-card p-6">
+    <div class="flex items-center justify-between mb-5"><h3 class="text-white font-semibold">Earnings Overview</h3><span class="badge-live">Last 7 Days</span></div>
+    <canvas id="earningsChart" height="200"></canvas>
+  </div>
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold mb-5">Quick Actions</h3>
+    <div class="space-y-3">
+      <a href="/transactions/deposit/" class="flex items-center gap-3 p-3.5 bg-navy-800 hover:bg-blue-500/10 rounded-xl transition-all border border-blue-500/10 hover:border-blue-500/30 group">
+        <div class="w-10 h-10 bg-emerald-500/15 rounded-xl flex items-center justify-center shrink-0"><i class="fa fa-arrow-down-to-line text-emerald-400"></i></div>
+        <div><p class="text-white font-semibold text-sm">Deposit Funds</p><p class="text-slate-500 text-xs">Add crypto to wallet</p></div>
+        <i class="fa fa-chevron-right text-slate-600 text-xs ml-auto group-hover:text-blue-400 transition-colors"></i>
+      </a>
+      <a href="/dashboard/plans/" class="flex items-center gap-3 p-3.5 bg-navy-800 hover:bg-blue-500/10 rounded-xl transition-all border border-blue-500/10 hover:border-blue-500/30 group">
+        <div class="w-10 h-10 bg-blue-500/15 rounded-xl flex items-center justify-center shrink-0"><i class="fa fa-chart-line text-blue-400"></i></div>
+        <div><p class="text-white font-semibold text-sm">Invest Now</p><p class="text-slate-500 text-xs">Choose a plan</p></div>
+        <i class="fa fa-chevron-right text-slate-600 text-xs ml-auto group-hover:text-blue-400 transition-colors"></i>
+      </a>
+      <a href="/transactions/withdraw/" class="flex items-center gap-3 p-3.5 bg-navy-800 hover:bg-blue-500/10 rounded-xl transition-all border border-blue-500/10 hover:border-blue-500/30 group">
+        <div class="w-10 h-10 bg-purple-500/15 rounded-xl flex items-center justify-center shrink-0"><i class="fa fa-arrow-up-from-line text-purple-400"></i></div>
+        <div><p class="text-white font-semibold text-sm">Withdraw</p><p class="text-slate-500 text-xs">Cash out profits</p></div>
+        <i class="fa fa-chevron-right text-slate-600 text-xs ml-auto group-hover:text-blue-400 transition-colors"></i>
+      </a>
+      <a href="/kyc/status/" class="flex items-center gap-3 p-3.5 bg-navy-800 hover:bg-blue-500/10 rounded-xl transition-all border border-blue-500/10 hover:border-blue-500/30 group">
+        <div class="w-10 h-10 bg-blue-500/15 rounded-xl flex items-center justify-center shrink-0 text-lg">{% if request.user.kyc_verified %}🟢{% else %}🪪{% endif %}</div>
+        <div><p class="text-white font-semibold text-sm">KYC Verification</p><p class="text-xs {% if request.user.kyc_verified %}text-emerald-400{% else %}text-slate-500{% endif %}">{% if request.user.kyc_verified %}Verified ✓{% else %}Complete verification{% endif %}</p></div>
+        <i class="fa fa-chevron-right text-slate-600 text-xs ml-auto group-hover:text-blue-400 transition-colors"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Active Investments -->
+<div class="glass-card p-6 mb-6">
+  <div class="flex items-center justify-between mb-5"><h3 class="text-white font-semibold">Active Investments</h3><a href="/dashboard/my-investments/" class="text-blue-400 text-sm hover:text-blue-300">View all →</a></div>
+  {% if active_investments %}
+  <div class="space-y-4">
+    {% for inv in active_investments|slice:":3" %}
+    <div class="bg-navy-800 rounded-xl p-4 border border-blue-500/10">
+      <div class="flex items-center justify-between mb-3">
+        <div><p class="text-white font-semibold text-sm">{{ inv.plan.name|default:"Investment" }}</p><p class="text-slate-500 text-xs">Started {{ inv.started_at|date:"M d, Y" }}</p></div>
+        <div class="text-right"><p class="text-white font-bold">${{ inv.amount|floatformat:2 }}</p><p class="text-emerald-400 text-xs">+{{ inv.plan.roi_percentage }}% ROI</p></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="flex-1 bg-navy-700 rounded-full h-2"><div class="bg-blue-500 h-2 rounded-full transition-all" style="width:{{ inv.get_progress_percent }}%"></div></div>
+        <span class="text-slate-400 text-xs shrink-0">{{ inv.get_progress_percent }}%</span>
+        <span class="badge-live shrink-0">Active</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-12">
+    <div class="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fa fa-briefcase text-blue-400 text-2xl"></i></div>
+    <p class="text-slate-400 font-medium mb-1">No active investments</p>
+    <p class="text-slate-600 text-sm mb-4">Start growing your wealth today</p>
+    <a href="/dashboard/plans/" class="btn-primary text-sm">Browse Investment Plans</a>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Recent Transactions -->
+<div class="glass-card p-6">
+  <div class="flex items-center justify-between mb-5"><h3 class="text-white font-semibold">Recent Transactions</h3><a href="/transactions/history/" class="text-blue-400 text-sm hover:text-blue-300">View all →</a></div>
+  {% if recent_transactions %}
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead><tr class="text-slate-500 text-xs uppercase tracking-wider"><th class="pb-3 text-left">Type</th><th class="pb-3 text-left hidden sm:table-cell">Date</th><th class="pb-3 text-right">Amount</th><th class="pb-3 text-right">Status</th></tr></thead>
+      <tbody class="divide-y divide-blue-500/5">
+        {% for txn in recent_transactions %}
+        <tr class="hover:bg-blue-500/5 transition-colors">
+          <td class="py-3 pr-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 {% if txn.transaction_type == 'deposit' %}bg-emerald-500/15{% elif txn.transaction_type == 'withdrawal' %}bg-red-500/15{% elif txn.transaction_type == 'profit' %}bg-yellow-500/15{% else %}bg-blue-500/15{% endif %}">
+                <i class="fa {% if txn.transaction_type == 'deposit' %}fa-arrow-down text-emerald-400{% elif txn.transaction_type == 'withdrawal' %}fa-arrow-up text-red-400{% elif txn.transaction_type == 'profit' %}fa-coins text-yellow-400{% else %}fa-exchange-alt text-blue-400{% endif %} text-xs"></i>
+              </div>
+              <div><p class="text-white font-medium capitalize">{{ txn.transaction_type }}</p><p class="text-slate-500 text-xs hidden sm:block">{{ txn.description|truncatechars:25 }}</p></div>
+            </div>
+          </td>
+          <td class="py-3 text-slate-400 text-xs hidden sm:table-cell">{{ txn.created_at|date:"M d, Y" }}</td>
+          <td class="py-3 text-right font-semibold {% if txn.transaction_type in 'deposit,profit,referral' %}text-emerald-400{% else %}text-white{% endif %}">${{ txn.amount|floatformat:2 }}</td>
+          <td class="py-3 text-right"><span class="{% if txn.status == 'completed' %}badge-success{% elif txn.status == 'pending' %}badge-pending{% else %}badge-danger{% endif %}">{{ txn.status|capfirst }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="text-center py-10"><p class="text-slate-500 text-sm">No transactions yet</p></div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById('earningsChart').getContext('2d'),{
+  type:'line',
+  data:{labels:{{ chart_labels|safe }},datasets:[{label:'Earnings ($)',data:{{ chart_profits|safe }},borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,0.1)',borderWidth:2,fill:true,tension:0.4,pointBackgroundColor:'#2563eb',pointRadius:4,pointHoverRadius:6}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(37,99,235,0.08)'},ticks:{color:'#64748b',font:{size:11}}},y:{grid:{color:'rgba(37,99,235,0.08)'},ticks:{color:'#64748b',font:{size:11},callback:v=>'$'+v}}}}
+});
+</script>
+{% endblock %}

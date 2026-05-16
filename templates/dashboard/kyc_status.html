@@ -1,0 +1,101 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}KYC Status{% endblock %}
+{% block page_subtitle %}Your identity verification status{% endblock %}
+{% block dashboard_content %}
+<div class="max-w-2xl mx-auto space-y-6">
+
+  {% if kyc %}
+    <!-- Status Banner -->
+    <div class="glass-card p-6 border {% if kyc.status == 'approved' %}border-emerald-500/40{% elif kyc.status == 'pending' %}border-yellow-500/40{% else %}border-red-500/40{% endif %}">
+      <div class="flex items-center gap-5">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shrink-0
+          {% if kyc.status == 'approved' %}bg-emerald-500/15{% elif kyc.status == 'pending' %}bg-yellow-500/15{% else %}bg-red-500/15{% endif %}">
+          {% if kyc.status == 'approved' %}🟢{% elif kyc.status == 'pending' %}🟡{% else %}🔴{% endif %}
+        </div>
+        <div class="flex-1">
+          <h2 class="text-white font-display font-bold text-2xl">
+            {% if kyc.status == 'approved' %}Identity Verified
+            {% elif kyc.status == 'pending' %}Verification Pending
+            {% else %}Verification Rejected
+            {% endif %}
+          </h2>
+          <p class="text-slate-400 text-sm mt-1">
+            {% if kyc.status == 'approved' %}Your account is fully verified. You have access to all platform features.
+            {% elif kyc.status == 'pending' %}Your documents are under review. Usually completed within 24 hours.
+            {% else %}Your KYC was rejected. Please review the note below and resubmit.
+            {% endif %}
+          </p>
+          <p class="text-slate-500 text-xs mt-2">Submitted {{ kyc.submitted_at|date:"M d, Y H:i" }}</p>
+        </div>
+        <span class="hidden sm:block text-3xl font-bold {% if kyc.status == 'approved' %}text-emerald-400{% elif kyc.status == 'pending' %}text-yellow-400{% else %}text-red-400{% endif %}">
+          {% if kyc.status == 'approved' %}✓{% elif kyc.status == 'pending' %}⏳{% else %}✗{% endif %}
+        </span>
+      </div>
+    </div>
+
+    {% if kyc.admin_note %}
+    <div class="glass-card p-5 border border-yellow-500/20">
+      <p class="text-yellow-300 font-semibold text-sm mb-1"><i class="fa fa-comment-dots mr-2"></i>Admin Note</p>
+      <p class="text-slate-300 text-sm">{{ kyc.admin_note }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Submitted Details -->
+    <div class="glass-card p-6">
+      <h3 class="text-white font-semibold mb-4">Submitted Information</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
+        <div class="bg-navy-800 p-3 rounded-xl"><p class="text-slate-500 text-xs mb-1">Full Name</p><p class="text-white font-medium text-sm">{{ kyc.full_name }}</p></div>
+        <div class="bg-navy-800 p-3 rounded-xl"><p class="text-slate-500 text-xs mb-1">Date of Birth</p><p class="text-white font-medium text-sm">{{ kyc.date_of_birth }}</p></div>
+        <div class="bg-navy-800 p-3 rounded-xl"><p class="text-slate-500 text-xs mb-1">Nationality</p><p class="text-white font-medium text-sm">{{ kyc.nationality }}</p></div>
+        <div class="bg-navy-800 p-3 rounded-xl"><p class="text-slate-500 text-xs mb-1">Country</p><p class="text-white font-medium text-sm">{{ kyc.country }}</p></div>
+        <div class="bg-navy-800 p-3 rounded-xl"><p class="text-slate-500 text-xs mb-1">ID Type</p><p class="text-white font-medium text-sm capitalize">{{ kyc.id_type }}</p></div>
+        <div class="bg-navy-800 p-3 rounded-xl"><p class="text-slate-500 text-xs mb-1">Status</p>
+          <p class="font-bold text-sm {% if kyc.status == 'approved' %}text-emerald-400{% elif kyc.status == 'pending' %}text-yellow-400{% else %}text-red-400{% endif %}">
+            {% if kyc.status == 'approved' %}🟢 Verified{% elif kyc.status == 'pending' %}🟡 Pending{% else %}🔴 Rejected{% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {% if kyc.status == 'rejected' %}
+    <a href="/kyc/submit/" class="btn-primary w-full justify-center py-3.5 text-base">
+      <i class="fa fa-redo mr-2"></i>Resubmit KYC Application
+    </a>
+    {% endif %}
+
+    {% if kyc.status == 'pending' %}
+    <div class="glass-card p-5 text-center">
+      <div class="flex justify-center mb-4">
+        <div class="flex gap-2">
+          <div class="w-2.5 h-2.5 bg-yellow-400 rounded-full animate-bounce" style="animation-delay:0s"></div>
+          <div class="w-2.5 h-2.5 bg-yellow-400 rounded-full animate-bounce" style="animation-delay:.15s"></div>
+          <div class="w-2.5 h-2.5 bg-yellow-400 rounded-full animate-bounce" style="animation-delay:.3s"></div>
+        </div>
+      </div>
+      <p class="text-slate-300 text-sm font-medium">Our compliance team is reviewing your documents</p>
+      <p class="text-slate-500 text-xs mt-1">You will receive a notification once reviewed</p>
+    </div>
+    {% endif %}
+
+  {% else %}
+    <!-- No KYC submitted yet -->
+    <div class="glass-card p-10 text-center">
+      <div class="w-20 h-20 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-5">
+        <i class="fa fa-id-card text-blue-400 text-4xl"></i>
+      </div>
+      <h2 class="text-white font-display font-bold text-2xl mb-3">Verify Your Identity</h2>
+      <p class="text-slate-400 text-sm max-w-md mx-auto mb-8">
+        Complete KYC verification to unlock higher investment limits, faster withdrawals, and full platform access. The process takes less than 5 minutes.
+      </p>
+      <div class="grid grid-cols-3 gap-4 max-w-sm mx-auto mb-8">
+        <div class="text-center"><div class="w-10 h-10 bg-blue-500/15 rounded-xl flex items-center justify-center mx-auto mb-2"><i class="fa fa-user text-blue-400 text-sm"></i></div><p class="text-slate-400 text-xs">Personal Info</p></div>
+        <div class="text-center"><div class="w-10 h-10 bg-blue-500/15 rounded-xl flex items-center justify-center mx-auto mb-2"><i class="fa fa-location-dot text-blue-400 text-sm"></i></div><p class="text-slate-400 text-xs">Address</p></div>
+        <div class="text-center"><div class="w-10 h-10 bg-blue-500/15 rounded-xl flex items-center justify-center mx-auto mb-2"><i class="fa fa-camera text-blue-400 text-sm"></i></div><p class="text-slate-400 text-xs">Documents</p></div>
+      </div>
+      <a href="/kyc/submit/" class="btn-primary inline-flex items-center gap-2 px-10 py-3.5 text-base">
+        <i class="fa fa-rocket"></i>Start KYC Verification
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

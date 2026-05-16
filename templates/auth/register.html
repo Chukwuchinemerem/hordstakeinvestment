@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Create Account — Hordstake{% endblock %}
+{% block body %}
+<div class="min-h-screen bg-navy-900 flex flex-col lg:flex-row">
+  <!-- Left -->
+  <div class="hidden lg:flex lg:w-5/12 bg-navy-800 relative overflow-hidden flex-col justify-between p-12">
+    <div class="absolute inset-0" style="background:linear-gradient(135deg,#060f22 0%,#0a1628 60%,#0f2142 100%);"></div>
+    <div class="absolute inset-0 opacity-30" style="background-image:radial-gradient(circle at 30% 60%,rgba(37,99,235,0.35) 0%,transparent 50%);"></div>
+    <div class="relative z-10">
+      <a href="/" class="flex items-center gap-2.5">
+        <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center"><i class="fa fa-bolt text-white"></i></div>
+        <span class="text-white font-display font-bold text-2xl">HORDSTAKE</span>
+      </a>
+    </div>
+    <div class="relative z-10">
+      <h2 class="text-white font-display font-bold text-4xl leading-tight mb-5">Start Your Investment Journey Today.</h2>
+      <p class="text-slate-400 mb-10">Join 50,000+ investors already growing their wealth with Hordstake.</p>
+      <div class="space-y-3">
+        <div class="flex items-center gap-3"><div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center"><i class="fa fa-check text-white text-xs"></i></div><span class="text-slate-300 text-sm">No hidden fees or charges</span></div>
+        <div class="flex items-center gap-3"><div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center"><i class="fa fa-check text-white text-xs"></i></div><span class="text-slate-300 text-sm">Automatic profit calculation</span></div>
+        <div class="flex items-center gap-3"><div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center"><i class="fa fa-check text-white text-xs"></i></div><span class="text-slate-300 text-sm">Withdraw anytime after plan maturity</span></div>
+        <div class="flex items-center gap-3"><div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center"><i class="fa fa-check text-white text-xs"></i></div><span class="text-slate-300 text-sm">24/7 dedicated customer support</span></div>
+        <div class="flex items-center gap-3"><div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center"><i class="fa fa-check text-white text-xs"></i></div><span class="text-slate-300 text-sm">Earn referral commissions</span></div>
+      </div>
+    </div>
+    <div class="relative z-10 glass-card p-5 rounded-xl">
+      <div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center"><i class="fa fa-check text-emerald-400 text-xs"></i></div><div><p class="text-white text-sm font-semibold">James from USA just earned $4,200</p><p class="text-slate-500 text-xs">2 minutes ago</p></div></div>
+      <p class="text-slate-400 text-xs">"Hordstake has completely changed my approach to crypto investing. Best platform."</p>
+    </div>
+  </div>
+
+  <!-- Right - Form -->
+  <div class="flex-1 flex items-center justify-center px-6 py-12">
+    <div class="w-full max-w-lg">
+      <div class="lg:hidden flex items-center gap-2 mb-8">
+        <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center"><i class="fa fa-bolt text-white text-sm"></i></div>
+        <span class="text-white font-display font-bold text-xl">HORDSTAKE</span>
+      </div>
+      <h1 class="text-white font-display font-bold text-3xl mb-2">Create Your Account</h1>
+      <p class="text-slate-400 text-sm mb-8">Already have an account? <a href="/auth/login/" class="text-blue-400 hover:text-blue-300 font-medium">Sign in</a></p>
+
+      <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        <input type="hidden" name="referral_code" value="{{ ref_code }}"/>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-slate-300 text-xs font-medium mb-1.5">First Name</label>
+            <input type="text" name="first_name" placeholder="First name" class="form-input" required/>
+          </div>
+          <div>
+            <label class="block text-slate-300 text-xs font-medium mb-1.5">Last Name</label>
+            <input type="text" name="last_name" placeholder="Last name" class="form-input" required/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Username</label>
+          <div class="relative"><i class="fa fa-at absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+          <input type="text" name="username" placeholder="Choose a username" class="form-input pl-10" required/></div>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Email Address</label>
+          <div class="relative"><i class="fa fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+          <input type="email" name="email" placeholder="your@email.com" class="form-input pl-10" required/></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-slate-300 text-xs font-medium mb-1.5">Phone</label>
+            <input type="text" name="phone" placeholder="+1 234 567 8900" class="form-input"/>
+          </div>
+          <div>
+            <label class="block text-slate-300 text-xs font-medium mb-1.5">Country</label>
+            <input type="text" name="country" placeholder="Your country" class="form-input"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Password</label>
+          <div class="relative"><i class="fa fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+          <input type="password" name="password1" id="p1" placeholder="Minimum 8 characters" class="form-input pl-10 pr-10" required/>
+          <button type="button" onclick="toggleP('p1','e1')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"><i class="fa fa-eye text-sm" id="e1"></i></button></div>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Confirm Password</label>
+          <div class="relative"><i class="fa fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+          <input type="password" name="password2" id="p2" placeholder="Repeat your password" class="form-input pl-10 pr-10" required/>
+          <button type="button" onclick="toggleP('p2','e2')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"><i class="fa fa-eye text-sm" id="e2"></i></button></div>
+        </div>
+        {% if ref_code %}
+        <div class="glass-card p-3 rounded-lg flex items-center gap-2"><i class="fa fa-gift text-blue-400 text-sm"></i><span class="text-slate-300 text-sm">Referral code applied: <strong class="text-blue-400">{{ ref_code }}</strong></span></div>
+        {% endif %}
+        <label class="flex items-start gap-3 cursor-pointer pt-1">
+          <input type="checkbox" class="mt-0.5 w-4 h-4 accent-blue-500" required/>
+          <span class="text-slate-400 text-xs leading-relaxed">I agree to the <a href="#" class="text-blue-400">Terms of Service</a> and <a href="#" class="text-blue-400">Privacy Policy</a>. I understand investment involves risk.</span>
+        </label>
+        <button type="submit" class="btn-primary w-full justify-center py-3.5 text-base">
+          <i class="fa fa-rocket"></i> Create My Account
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<script>function toggleP(id,ei){const f=document.getElementById(id);const i=document.getElementById(ei);f.type=f.type==='password'?'text':'password';i.className=f.type==='password'?'fa fa-eye text-sm':'fa fa-eye-slash text-sm';}</script>
+{% endblock %}

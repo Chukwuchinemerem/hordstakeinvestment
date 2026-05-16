@@ -1,0 +1,235 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}KYC Verification{% endblock %}
+{% block page_subtitle %}Verify your identity to unlock full platform access{% endblock %}
+{% block dashboard_content %}
+<div class="max-w-3xl mx-auto">
+
+  <!-- Header -->
+  <div class="glass-card p-6 mb-6 border border-blue-500/20">
+    <div class="flex items-start gap-4">
+      <div class="w-12 h-12 bg-blue-500/15 rounded-xl flex items-center justify-center shrink-0">
+        <i class="fa fa-id-card text-blue-400 text-xl"></i>
+      </div>
+      <div>
+        <h2 class="text-white font-display font-bold text-xl mb-1">Identity Verification (KYC)</h2>
+        <p class="text-slate-400 text-sm">Complete verification to unlock higher deposit limits, investment tiers, and withdrawals. Your data is stored securely and only used for compliance.</p>
+        <div class="flex flex-wrap gap-3 mt-3">
+          <span class="flex items-center gap-1.5 text-xs text-slate-400"><i class="fa fa-shield-halved text-blue-400"></i>Bank-grade encryption</span>
+          <span class="flex items-center gap-1.5 text-xs text-slate-400"><i class="fa fa-lock text-blue-400"></i>Data never shared</span>
+          <span class="flex items-center gap-1.5 text-xs text-slate-400"><i class="fa fa-clock text-blue-400"></i>Reviewed within 24h</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form method="POST" enctype="multipart/form-data" class="space-y-6" id="kycForm">
+    {% csrf_token %}
+
+    <!-- Step 1: Personal Info -->
+    <div class="glass-card p-6">
+      <h3 class="text-white font-semibold text-base mb-5 flex items-center gap-2">
+        <span class="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold shrink-0">1</span>
+        Personal Information
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="sm:col-span-2">
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Full Legal Name <span class="text-red-400">*</span></label>
+          <input type="text" name="full_name" placeholder="As it appears on your government ID" class="form-input" required/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Date of Birth <span class="text-red-400">*</span></label>
+          <input type="date" name="date_of_birth" class="form-input" required/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Gender</label>
+          <select name="gender" class="form-select">
+            <option value="">Select gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other / Prefer not to say</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Nationality <span class="text-red-400">*</span></label>
+          <input type="text" name="nationality" placeholder="e.g. American, British" class="form-input" required/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Phone Number <span class="text-red-400">*</span></label>
+          <input type="tel" name="phone_number" placeholder="+1 234 567 8900" class="form-input" required/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Occupation</label>
+          <input type="text" name="occupation" placeholder="e.g. Software Engineer" class="form-input"/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Employer / Company Name</label>
+          <input type="text" name="employer_name" placeholder="Your employer or company" class="form-input"/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Annual Income Range</label>
+          <select name="annual_income" class="form-select">
+            <option value="">Select range</option>
+            <option value="Under $25,000">Under $25,000</option>
+            <option value="$25,000 - $50,000">$25,000 – $50,000</option>
+            <option value="$50,000 - $100,000">$50,000 – $100,000</option>
+            <option value="$100,000 - $250,000">$100,000 – $250,000</option>
+            <option value="Over $250,000">Over $250,000</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Source of Funds <span class="text-red-400">*</span></label>
+          <select name="source_of_funds" class="form-select" required>
+            <option value="">Select source</option>
+            <option value="Employment / Salary">Employment / Salary</option>
+            <option value="Business Income">Business Income</option>
+            <option value="Investments / Trading">Investments / Trading</option>
+            <option value="Savings">Savings</option>
+            <option value="Inheritance / Gift">Inheritance / Gift</option>
+            <option value="Real Estate">Real Estate</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Address -->
+    <div class="glass-card p-6">
+      <h3 class="text-white font-semibold text-base mb-5 flex items-center gap-2">
+        <span class="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold shrink-0">2</span>
+        Residential Address
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="sm:col-span-2">
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Address Line 1 <span class="text-red-400">*</span></label>
+          <input type="text" name="address_line1" placeholder="Street number and name" class="form-input" required/>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Address Line 2</label>
+          <input type="text" name="address_line2" placeholder="Apartment, suite, unit, etc." class="form-input"/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">City <span class="text-red-400">*</span></label>
+          <input type="text" name="city" placeholder="City" class="form-input" required/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">State / Province <span class="text-red-400">*</span></label>
+          <input type="text" name="state" placeholder="State or Province" class="form-input" required/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">ZIP / Postal Code <span class="text-red-400">*</span></label>
+          <input type="text" name="zip_code" placeholder="ZIP or Postal Code" class="form-input" required/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Country <span class="text-red-400">*</span></label>
+          <input type="text" name="country" placeholder="Country" class="form-input" value="{{ request.user.country }}" required/>
+        </div>
+        <div class="sm:col-span-2 bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
+          <label class="block text-slate-200 text-xs font-semibold mb-1.5">
+            <i class="fa fa-flag-usa text-blue-400 mr-1"></i>US Citizens — Social Security Number (SSN)
+          </label>
+          <input type="text" name="ssn" placeholder="XXX-XX-XXXX (US citizens only)" class="form-input font-mono" maxlength="11"/>
+          <p class="text-slate-500 text-xs mt-1.5">Required for US residents only. Stored encrypted and never shared.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: ID Documents -->
+    <div class="glass-card p-6">
+      <h3 class="text-white font-semibold text-base mb-5 flex items-center gap-2">
+        <span class="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold shrink-0">3</span>
+        Government ID Document
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">ID Type <span class="text-red-400">*</span></label>
+          <select name="id_type" class="form-select" required>
+            <option value="passport">Passport</option>
+            <option value="drivers_license">Driver's License</option>
+            <option value="national_id">National ID Card</option>
+            <option value="residence_permit">Residence Permit</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">ID Number <span class="text-red-400">*</span></label>
+          <input type="text" name="id_number" placeholder="Document number" class="form-input font-mono" required/>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Expiry Date</label>
+          <input type="date" name="id_expiry" class="form-input"/>
+        </div>
+      </div>
+
+      <!-- Upload Zone -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
+        <!-- ID Front -->
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-2">ID Front <span class="text-red-400">*</span></label>
+          <div onclick="document.getElementById('idFrontFile').click()"
+            class="border-2 border-dashed border-blue-500/25 rounded-xl p-5 text-center cursor-pointer hover:border-blue-500/50 transition-colors group">
+            <i class="fa fa-id-card text-blue-400 text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+            <p class="text-slate-400 text-xs">Front of ID</p>
+            <p id="idFrontName" class="text-blue-400 text-xs mt-1 hidden"></p>
+            <input type="file" id="idFrontFile" name="id_front" accept="image/*" class="hidden" onchange="previewFile(this,'idFrontName','idFrontPreview')" required/>
+          </div>
+          <img id="idFrontPreview" class="hidden mt-2 w-full h-24 object-cover rounded-lg border border-blue-500/20"/>
+        </div>
+
+        <!-- ID Back -->
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-2">ID Back <span class="text-slate-500 font-normal">(if applicable)</span></label>
+          <div onclick="document.getElementById('idBackFile').click()"
+            class="border-2 border-dashed border-blue-500/25 rounded-xl p-5 text-center cursor-pointer hover:border-blue-500/50 transition-colors group">
+            <i class="fa fa-id-card text-slate-500 text-2xl mb-2 group-hover:text-blue-400 transition-colors"></i>
+            <p class="text-slate-400 text-xs">Back of ID</p>
+            <p id="idBackName" class="text-blue-400 text-xs mt-1 hidden"></p>
+            <input type="file" id="idBackFile" name="id_back" accept="image/*" class="hidden" onchange="previewFile(this,'idBackName','idBackPreview')"/>
+          </div>
+          <img id="idBackPreview" class="hidden mt-2 w-full h-24 object-cover rounded-lg border border-blue-500/20"/>
+        </div>
+
+        <!-- Selfie -->
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-2">Selfie Holding ID <span class="text-red-400">*</span></label>
+          <div onclick="document.getElementById('selfieFile').click()"
+            class="border-2 border-dashed border-blue-500/25 rounded-xl p-5 text-center cursor-pointer hover:border-blue-500/50 transition-colors group">
+            <i class="fa fa-camera text-blue-400 text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+            <p class="text-slate-400 text-xs">Selfie with ID</p>
+            <p id="selfieName" class="text-blue-400 text-xs mt-1 hidden"></p>
+            <input type="file" id="selfieFile" name="selfie" accept="image/*" class="hidden" onchange="previewFile(this,'selfieName','selfiePreview')" required/>
+          </div>
+          <img id="selfiePreview" class="hidden mt-2 w-full h-24 object-cover rounded-lg border border-blue-500/20"/>
+        </div>
+      </div>
+      <p class="text-slate-500 text-xs mt-3"><i class="fa fa-info-circle text-blue-400 mr-1"></i>Ensure photos are clear, well-lit, and all text on the ID is readable.</p>
+    </div>
+
+    <!-- Declaration -->
+    <div class="glass-card p-5">
+      <label class="flex items-start gap-3 cursor-pointer">
+        <input type="checkbox" class="mt-0.5 w-4 h-4 accent-blue-500 shrink-0" required/>
+        <span class="text-slate-300 text-sm leading-relaxed">I declare that all information provided is true, accurate and complete. I consent to Hordstake verifying my identity for compliance purposes. I understand my data is stored securely and protected under applicable data protection laws.</span>
+      </label>
+    </div>
+
+    <button type="submit" class="btn-primary w-full justify-center py-4 text-base">
+      <i class="fa fa-paper-plane mr-2"></i>Submit KYC Application
+    </button>
+  </form>
+</div>
+
+<script>
+function previewFile(input, nameId, previewId) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById(nameId).textContent = '✓ ' + file.name;
+  document.getElementById(nameId).classList.remove('hidden');
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById(previewId);
+    img.src = e.target.result;
+    img.classList.remove('hidden');
+  };
+  reader.readAsDataURL(file);
+}
+</script>
+{% endblock %}

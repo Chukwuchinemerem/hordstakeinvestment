@@ -1,0 +1,34 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}Wallet Addresses{% endblock %}
+{% block admin_content %}
+<div class="max-w-2xl space-y-4">
+  <p class="text-slate-400 text-sm">Configure deposit wallet addresses for each cryptocurrency. Users will send funds to these addresses.</p>
+  
+  {% for crypto,label in crypto_label_pairs %}
+  <div class="glass-card p-5 border border-blue-500/10">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-10 h-10 bg-blue-500/15 rounded-xl flex items-center justify-center">
+        <span class="text-blue-400 font-bold text-sm">{{ crypto }}</span>
+      </div>
+      <div>
+        <p class="text-white font-semibold">{{ label }}</p>
+        {% for w in wallets %}{% if w.crypto == crypto %}
+        <p class="text-emerald-400 text-xs font-mono">{{ w.address }}</p>
+        {% endif %}{% endfor %}
+      </div>
+    </div>
+    <form method="POST" class="flex gap-2">
+      {% csrf_token %}
+      <input type="hidden" name="crypto" value="{{ crypto }}"/>
+      <input type="hidden" name="network" value="{{ label }}"/>
+      <input type="text" name="address" placeholder="Enter {{ crypto }} wallet address"
+        value="{% for w in wallets %}{% if w.crypto == crypto %}{{ w.address }}{% endif %}{% endfor %}"
+        class="form-input flex-1 font-mono text-sm" required/>
+      <button type="submit" class="btn-primary shrink-0 text-sm py-2 px-4">
+        <i class="fa fa-save"></i> Save
+      </button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

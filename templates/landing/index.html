@@ -1,0 +1,333 @@
+{% extends 'base.html' %}
+{% block title %}Hordstake — Premium Crypto Investment Platform{% endblock %}
+{% block body %}
+
+<!-- NAVBAR -->
+<nav class="sticky top-[36px] z-40 glass border-b border-blue-900/30">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+    <a href="/" class="flex items-center gap-2.5">
+      <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/30">
+        <i class="fa fa-bolt text-white text-sm"></i>
+      </div>
+      <span class="font-display font-800 text-xl text-white tracking-tight">HORDSTAKE</span>
+    </a>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
+      <a href="#plans" class="hover:text-white transition-colors">Plans</a>
+      <a href="#features" class="hover:text-white transition-colors">Features</a>
+      <a href="#how-it-works" class="hover:text-white transition-colors">How It Works</a>
+      <a href="#testimonials" class="hover:text-white transition-colors">Testimonials</a>
+      <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+    </div>
+    <div class="hidden md:flex items-center gap-3">
+      <a href="/auth/login/" class="btn-outline text-sm px-5 py-2.5">Sign In</a>
+      <a href="/auth/register/" class="btn-primary text-sm px-5 py-2.5">Get Started <i class="fa fa-arrow-right text-xs"></i></a>
+    </div>
+    <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-400 hover:text-white transition-colors">
+      <i class="fa fa-bars text-lg"></i>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden md:hidden border-t border-blue-900/30 px-4 py-4 space-y-1">
+    <a href="#plans" class="block py-2.5 px-3 text-sm text-slate-400 hover:text-white hover:bg-blue-600/10 rounded-lg">Investment Plans</a>
+    <a href="#features" class="block py-2.5 px-3 text-sm text-slate-400 hover:text-white hover:bg-blue-600/10 rounded-lg">Features</a>
+    <a href="#how-it-works" class="block py-2.5 px-3 text-sm text-slate-400 hover:text-white hover:bg-blue-600/10 rounded-lg">How It Works</a>
+    <a href="#testimonials" class="block py-2.5 px-3 text-sm text-slate-400 hover:text-white hover:bg-blue-600/10 rounded-lg">Testimonials</a>
+    <div class="pt-3 flex flex-col gap-2">
+      <a href="/auth/login/" class="btn-outline w-full justify-center text-sm">Sign In</a>
+      <a href="/auth/register/" class="btn-primary w-full justify-center text-sm">Create Free Account</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO CAROUSEL -->
+<section class="relative overflow-hidden" style="height:calc(100vh - 100px);min-height:580px">
+  <div class="relative h-full">
+    <div id="slide0" class="carousel-slide absolute inset-0 opacity-100 transition-opacity duration-700">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1600&q=80')"></div>
+      <div class="absolute inset-0" style="background:linear-gradient(110deg,rgba(2,8,23,.97) 0%,rgba(10,15,40,.88) 55%,rgba(2,8,23,.55) 100%)"></div>
+      <div class="relative h-full flex items-center px-6 sm:px-14 max-w-7xl mx-auto">
+        <div class="max-w-2xl">
+          <span class="section-label">CRYPTO INVESTMENT</span>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-800 text-white leading-tight mb-5">Grow Your Wealth<br/>With Smart<br/><span class="text-blue-400">Crypto Investing</span></h1>
+          <p class="text-slate-300 text-base sm:text-lg mb-8 leading-relaxed max-w-lg">Join Hordstake — the world's most trusted crypto investment platform with guaranteed, automated returns.</p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a href="/auth/register/" class="btn-primary text-base px-8 py-3.5 shadow-xl shadow-blue-500/30"><i class="fa fa-rocket"></i> Create Free Account</a>
+            <a href="/auth/login/" class="btn-outline text-base px-8 py-3.5"><i class="fa fa-sign-in-alt"></i> Sign In</a>
+          </div>
+          <div class="mt-8 glass rounded-xl p-3.5 inline-flex items-center gap-3 max-w-xs">
+            <div class="w-9 h-9 bg-blue-600/20 rounded-full flex items-center justify-center shrink-0 border border-blue-500/20"><i class="fa fa-check-circle text-blue-400 text-sm"></i></div>
+            <div><p class="text-xs font-semibold text-white flex items-center gap-1.5"><span class="live-dot"></span> Live Activity</p><p class="text-xs text-slate-400" id="liveActivity">Someone from Germany invested $5,000</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="slide1" class="carousel-slide absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-700">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=1600&q=80')"></div>
+      <div class="absolute inset-0" style="background:linear-gradient(110deg,rgba(2,8,23,.97) 0%,rgba(10,15,40,.88) 55%,rgba(2,8,23,.55) 100%)"></div>
+      <div class="relative h-full flex items-center px-6 sm:px-14 max-w-7xl mx-auto"><div class="max-w-2xl"><span class="section-label">PROVEN RETURNS</span><h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-800 text-white leading-tight mb-5">Up to <span class="text-blue-400">35% ROI</span><br/>on Every<br/>Investment Plan</h1><p class="text-slate-300 text-base sm:text-lg mb-8 leading-relaxed max-w-lg">5 flexible plans tailored to your goals. Profits are credited automatically — no manual action required.</p><div class="flex flex-col sm:flex-row gap-3"><a href="/auth/register/" class="btn-primary text-base px-8 py-3.5"><i class="fa fa-rocket"></i> Start Investing</a><a href="#plans" class="btn-outline text-base px-8 py-3.5"><i class="fa fa-list"></i> View Plans</a></div></div></div>
+    </div>
+    <div id="slide2" class="carousel-slide absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-700">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=1600&q=80')"></div>
+      <div class="absolute inset-0" style="background:linear-gradient(110deg,rgba(2,8,23,.97) 0%,rgba(10,15,40,.88) 55%,rgba(2,8,23,.55) 100%)"></div>
+      <div class="relative h-full flex items-center px-6 sm:px-14 max-w-7xl mx-auto"><div class="max-w-2xl"><span class="section-label">MULTI-CHAIN SUPPORT</span><h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-800 text-white leading-tight mb-5">BTC · ETH · USDT<br/>SOL · TON &amp;<br/><span class="text-blue-400">More Supported</span></h1><p class="text-slate-300 text-base sm:text-lg mb-8 leading-relaxed max-w-lg">Deposit and withdraw with all major cryptocurrencies. Zero fees, instant processing, 100% secure transactions.</p><div class="flex flex-col sm:flex-row gap-3"><a href="/auth/register/" class="btn-primary text-base px-8 py-3.5"><i class="fa fa-rocket"></i> Get Started</a><a href="/auth/login/" class="btn-outline text-base px-8 py-3.5"><i class="fa fa-sign-in-alt"></i> Sign In</a></div></div></div>
+    </div>
+    <div id="slide3" class="carousel-slide absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-700">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1600&q=80')"></div>
+      <div class="absolute inset-0" style="background:linear-gradient(110deg,rgba(2,8,23,.97) 0%,rgba(10,15,40,.88) 55%,rgba(2,8,23,.55) 100%)"></div>
+      <div class="relative h-full flex items-center px-6 sm:px-14 max-w-7xl mx-auto"><div class="max-w-2xl"><span class="section-label">SECURE PLATFORM</span><h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-800 text-white leading-tight mb-5">Bank-Grade<br/>Security for<br/><span class="text-blue-400">Your Digital Assets</span></h1><p class="text-slate-300 text-base sm:text-lg mb-8 leading-relaxed max-w-lg">256-bit AES encryption, cold wallet storage, and MFA keep your funds protected around the clock.</p><div class="flex flex-col sm:flex-row gap-3"><a href="/auth/register/" class="btn-primary text-base px-8 py-3.5"><i class="fa fa-rocket"></i> Invest Safely</a><a href="/auth/login/" class="btn-outline text-base px-8 py-3.5"><i class="fa fa-sign-in-alt"></i> Sign In</a></div></div></div>
+    </div>
+    <div id="slide4" class="carousel-slide absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-700">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1580048915913-4f8f5cb481c4?w=1600&q=80')"></div>
+      <div class="absolute inset-0" style="background:linear-gradient(110deg,rgba(2,8,23,.97) 0%,rgba(10,15,40,.88) 55%,rgba(2,8,23,.55) 100%)"></div>
+      <div class="relative h-full flex items-center px-6 sm:px-14 max-w-7xl mx-auto"><div class="max-w-2xl"><span class="section-label">REFERRAL REWARDS</span><h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-800 text-white leading-tight mb-5">Earn Passive<br/>Income Through<br/><span class="text-blue-400">Your Network</span></h1><p class="text-slate-300 text-base sm:text-lg mb-8 leading-relaxed max-w-lg">Earn 5% commission on every deposit your referrals make. Build a passive income stream from day one.</p><div class="flex flex-col sm:flex-row gap-3"><a href="/auth/register/" class="btn-primary text-base px-8 py-3.5"><i class="fa fa-users"></i> Join &amp; Refer</a><a href="/auth/login/" class="btn-outline text-base px-8 py-3.5"><i class="fa fa-sign-in-alt"></i> Sign In</a></div></div></div>
+    </div>
+    <div id="slide5" class="carousel-slide absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-700">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1600&q=80')"></div>
+      <div class="absolute inset-0" style="background:linear-gradient(110deg,rgba(2,8,23,.97) 0%,rgba(10,15,40,.88) 55%,rgba(2,8,23,.55) 100%)"></div>
+      <div class="relative h-full flex items-center px-6 sm:px-14 max-w-7xl mx-auto"><div class="max-w-2xl"><span class="section-label">24/7 SUPPORT</span><h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-800 text-white leading-tight mb-5">Expert Support<br/>Available<br/><span class="text-blue-400">Around the Clock</span></h1><p class="text-slate-300 text-base sm:text-lg mb-8 leading-relaxed max-w-lg">Dedicated account managers and live WhatsApp support. We're here whenever you need us, 24/7/365.</p><div class="flex flex-col sm:flex-row gap-3"><a href="/auth/register/" class="btn-primary text-base px-8 py-3.5"><i class="fa fa-rocket"></i> Get Started</a><a href="/auth/login/" class="btn-outline text-base px-8 py-3.5"><i class="fa fa-sign-in-alt"></i> Sign In</a></div></div></div>
+    </div>
+    <div id="slide6" class="carousel-slide absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-700">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1600&q=80')"></div>
+      <div class="absolute inset-0" style="background:linear-gradient(110deg,rgba(2,8,23,.97) 0%,rgba(10,15,40,.88) 55%,rgba(2,8,23,.55) 100%)"></div>
+      <div class="relative h-full flex items-center px-6 sm:px-14 max-w-7xl mx-auto"><div class="max-w-2xl"><span class="section-label">FAST WITHDRAWALS</span><h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-800 text-white leading-tight mb-5">Instant Access<br/>to Your<br/><span class="text-blue-400">Hard-Earned Profits</span></h1><p class="text-slate-300 text-base sm:text-lg mb-8 leading-relaxed max-w-lg">Withdraw your funds anytime. All withdrawal requests are processed within 24 hours, no questions asked.</p><div class="flex flex-col sm:flex-row gap-3"><a href="/auth/register/" class="btn-primary text-base px-8 py-3.5"><i class="fa fa-rocket"></i> Start Earning</a><a href="/auth/login/" class="btn-outline text-base px-8 py-3.5"><i class="fa fa-sign-in-alt"></i> Sign In</a></div></div></div>
+    </div>
+    <div id="slide7" class="carousel-slide absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-700">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=1600&q=80')"></div>
+      <div class="absolute inset-0" style="background:linear-gradient(110deg,rgba(2,8,23,.97) 0%,rgba(10,15,40,.88) 55%,rgba(2,8,23,.55) 100%)"></div>
+      <div class="relative h-full flex items-center px-6 sm:px-14 max-w-7xl mx-auto"><div class="max-w-2xl"><span class="section-label">JOIN THOUSANDS</span><h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-800 text-white leading-tight mb-5">12,000+ Investors<br/>Already<br/><span class="text-blue-400">Earning Daily</span></h1><p class="text-slate-300 text-base sm:text-lg mb-8 leading-relaxed max-w-lg">From Nigeria to Japan, investors worldwide trust Hordstake to grow their crypto portfolios every day.</p><div class="flex flex-col sm:flex-row gap-3"><a href="/auth/register/" class="btn-primary text-base px-8 py-3.5"><i class="fa fa-rocket"></i> Join Now</a><a href="/auth/login/" class="btn-outline text-base px-8 py-3.5"><i class="fa fa-sign-in-alt"></i> Sign In</a></div></div></div>
+    </div>
+    <!-- Controls -->
+    <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 glass rounded-full flex items-center justify-center text-white hover:bg-blue-600/30 transition-all z-10"><i class="fa fa-chevron-left text-sm"></i></button>
+    <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 glass rounded-full flex items-center justify-center text-white hover:bg-blue-600/30 transition-all z-10"><i class="fa fa-chevron-right text-sm"></i></button>
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="carouselDots"></div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<section class="py-10 bg-navy-900/70 border-y border-blue-900/20">
+  <div class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="stat-card text-center rounded-xl p-5"><p class="text-3xl font-display font-700 text-white mb-1">{{ stats.total_users|default:"12,547" }}+</p><p class="text-xs text-slate-400 uppercase tracking-widest">Active Investors</p><p class="text-xs text-emerald-400 mt-1 font-medium">&#8593; 12% this week</p></div>
+    <div class="stat-card text-center rounded-xl p-5"><p class="text-3xl font-display font-700 text-white mb-1">$4.2M+</p><p class="text-xs text-slate-400 uppercase tracking-widest">Total Deposited</p><p class="text-xs text-emerald-400 mt-1 font-medium">&#8593; 8% this month</p></div>
+    <div class="stat-card text-center rounded-xl p-5"><p class="text-3xl font-display font-700 text-white mb-1">$2.8M+</p><p class="text-xs text-slate-400 uppercase tracking-widest">Profits Paid Out</p><p class="text-xs text-emerald-400 mt-1 font-medium">&#8593; 15% this month</p></div>
+    <div class="stat-card text-center rounded-xl p-5"><p class="text-3xl font-display font-700 text-white mb-1">35%</p><p class="text-xs text-slate-400 uppercase tracking-widest">Max ROI</p><p class="text-xs text-blue-400 mt-1 font-medium">Guaranteed returns</p></div>
+  </div>
+</section>
+
+<!-- INVESTMENT PLANS -->
+<section class="py-20 px-4" id="plans">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14">
+      <span class="section-label">INVESTMENT PLANS</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-700 text-white mb-4">Choose Your Investment Tier</h2>
+      <p class="text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">Flexible plans designed for every investor. Start with as little as $50 and scale your portfolio systematically.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for plan in plans %}
+      <div class="glass-card rounded-2xl p-6 relative {% if plan.is_featured %}ring-2 ring-blue-500/60{% endif %}">
+        {% if plan.is_featured %}<div class="absolute -top-3 left-1/2 -translate-x-1/2 badge badge-blue px-4 py-1">MOST POPULAR</div>{% endif %}
+        <div class="flex items-start justify-between mb-5"><div><h3 class="font-display font-700 text-lg text-white mb-1">{{ plan.name }}</h3><p class="text-xs text-slate-500">{{ plan.get_duration_display_full }}</p></div><div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:{{ plan.color }}20;border:1px solid {{ plan.color }}40"><i class="fa fa-chart-line text-lg" style="color:{{ plan.color }}"></i></div></div>
+        <div class="mb-5"><div class="text-4xl font-display font-800 text-white mb-1">{{ plan.roi_percentage }}%</div><div class="text-xs text-slate-400">ROI per {{ plan.get_duration_display_full }}</div></div>
+        <div class="space-y-2.5 mb-6 text-sm border-t border-blue-900/30 pt-4"><div class="flex justify-between"><span class="text-slate-400">Min Deposit</span><span class="text-white font-semibold">${{ plan.min_deposit }}</span></div><div class="flex justify-between"><span class="text-slate-400">Max Deposit</span><span class="text-white font-semibold">${{ plan.max_deposit }}</span></div><div class="flex justify-between"><span class="text-slate-400">Duration</span><span class="text-white font-semibold">{{ plan.get_duration_display_full }}</span></div><div class="flex justify-between"><span class="text-slate-400">Profit Type</span><span class="text-emerald-400 font-semibold">Auto-credited</span></div></div>
+        <a href="/auth/register/" class="{% if plan.is_featured %}btn-primary{% else %}btn-outline{% endif %} w-full justify-center py-3 text-sm">Invest Now <i class="fa fa-arrow-right text-xs"></i></a>
+      </div>
+      {% empty %}
+      <div class="glass-card rounded-2xl p-6"><div class="flex items-start justify-between mb-5"><div><h3 class="font-display font-700 text-lg text-white mb-1">Starter Plan</h3><p class="text-xs text-slate-500">5 Days</p></div><div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center"><i class="fa fa-seedling text-blue-400 text-lg"></i></div></div><div class="mb-5"><div class="text-4xl font-display font-800 text-white mb-1">2%</div><div class="text-xs text-slate-400">ROI per 5 Days</div></div><div class="space-y-2.5 mb-6 text-sm border-t border-blue-900/30 pt-4"><div class="flex justify-between"><span class="text-slate-400">Min Deposit</span><span class="text-white font-semibold">$50</span></div><div class="flex justify-between"><span class="text-slate-400">Max Deposit</span><span class="text-white font-semibold">$999</span></div><div class="flex justify-between"><span class="text-slate-400">Duration</span><span class="text-white font-semibold">5 Days</span></div><div class="flex justify-between"><span class="text-slate-400">Profit Type</span><span class="text-emerald-400 font-semibold">Auto-credited</span></div></div><a href="/auth/register/" class="btn-outline w-full justify-center py-3 text-sm">Invest Now</a></div>
+      <div class="glass-card rounded-2xl p-6 ring-2 ring-blue-500/60 relative"><div class="absolute -top-3 left-1/2 -translate-x-1/2 badge badge-blue px-4 py-1">MOST POPULAR</div><div class="flex items-start justify-between mb-5"><div><h3 class="font-display font-700 text-lg text-white mb-1">Silver Plan</h3><p class="text-xs text-slate-500">14 Days</p></div><div class="w-12 h-12 rounded-xl bg-slate-400/10 border border-slate-400/20 flex items-center justify-center"><i class="fa fa-chart-bar text-slate-300 text-lg"></i></div></div><div class="mb-5"><div class="text-4xl font-display font-800 text-white mb-1">8%</div><div class="text-xs text-slate-400">ROI per 14 Days</div></div><div class="space-y-2.5 mb-6 text-sm border-t border-blue-900/30 pt-4"><div class="flex justify-between"><span class="text-slate-400">Min Deposit</span><span class="text-white font-semibold">$1,000</span></div><div class="flex justify-between"><span class="text-slate-400">Max Deposit</span><span class="text-white font-semibold">$4,999</span></div><div class="flex justify-between"><span class="text-slate-400">Duration</span><span class="text-white font-semibold">14 Days</span></div><div class="flex justify-between"><span class="text-slate-400">Profit Type</span><span class="text-emerald-400 font-semibold">Auto-credited</span></div></div><a href="/auth/register/" class="btn-primary w-full justify-center py-3 text-sm">Invest Now</a></div>
+      <div class="glass-card rounded-2xl p-6"><div class="flex items-start justify-between mb-5"><div><h3 class="font-display font-700 text-lg text-white mb-1">Gold Plan</h3><p class="text-xs text-slate-500">30 Days</p></div><div class="w-12 h-12 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center"><i class="fa fa-crown text-yellow-400 text-lg"></i></div></div><div class="mb-5"><div class="text-4xl font-display font-800 text-white mb-1">15%</div><div class="text-xs text-slate-400">ROI per 30 Days</div></div><div class="space-y-2.5 mb-6 text-sm border-t border-blue-900/30 pt-4"><div class="flex justify-between"><span class="text-slate-400">Min Deposit</span><span class="text-white font-semibold">$5,000</span></div><div class="flex justify-between"><span class="text-slate-400">Max Deposit</span><span class="text-white font-semibold">$19,999</span></div><div class="flex justify-between"><span class="text-slate-400">Duration</span><span class="text-white font-semibold">30 Days</span></div><div class="flex justify-between"><span class="text-slate-400">Profit Type</span><span class="text-emerald-400 font-semibold">Auto-credited</span></div></div><a href="/auth/register/" class="btn-outline w-full justify-center py-3 text-sm">Invest Now</a></div>
+      <div class="glass-card rounded-2xl p-6"><div class="flex items-start justify-between mb-5"><div><h3 class="font-display font-700 text-lg text-white mb-1">Platinum Plan</h3><p class="text-xs text-slate-500">60 Days</p></div><div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center"><i class="fa fa-gem text-purple-400 text-lg"></i></div></div><div class="mb-5"><div class="text-4xl font-display font-800 text-white mb-1">25%</div><div class="text-xs text-slate-400">ROI per 60 Days</div></div><div class="space-y-2.5 mb-6 text-sm border-t border-blue-900/30 pt-4"><div class="flex justify-between"><span class="text-slate-400">Min Deposit</span><span class="text-white font-semibold">$20,000</span></div><div class="flex justify-between"><span class="text-slate-400">Max Deposit</span><span class="text-white font-semibold">$49,999</span></div><div class="flex justify-between"><span class="text-slate-400">Duration</span><span class="text-white font-semibold">60 Days</span></div><div class="flex justify-between"><span class="text-slate-400">Profit Type</span><span class="text-emerald-400 font-semibold">Auto-credited</span></div></div><a href="/auth/register/" class="btn-outline w-full justify-center py-3 text-sm">Invest Now</a></div>
+      <div class="glass-card rounded-2xl p-6"><div class="flex items-start justify-between mb-5"><div><h3 class="font-display font-700 text-lg text-white mb-1">Diamond Plan</h3><p class="text-xs text-slate-500">90 Days</p></div><div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center"><i class="fa fa-diamond text-cyan-400 text-lg"></i></div></div><div class="mb-5"><div class="text-4xl font-display font-800 text-white mb-1">35%</div><div class="text-xs text-slate-400">ROI per 90 Days</div></div><div class="space-y-2.5 mb-6 text-sm border-t border-blue-900/30 pt-4"><div class="flex justify-between"><span class="text-slate-400">Min Deposit</span><span class="text-white font-semibold">$50,000</span></div><div class="flex justify-between"><span class="text-slate-400">Max Deposit</span><span class="text-white font-semibold">Unlimited</span></div><div class="flex justify-between"><span class="text-slate-400">Duration</span><span class="text-white font-semibold">90 Days</span></div><div class="flex justify-between"><span class="text-slate-400">Profit Type</span><span class="text-emerald-400 font-semibold">Auto-credited</span></div></div><a href="/auth/register/" class="btn-outline w-full justify-center py-3 text-sm">Invest Now</a></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-20 px-4 bg-navy-900/40 border-y border-blue-900/20" id="features">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14"><span class="section-label">WHY HORDSTAKE</span><h2 class="font-display text-3xl sm:text-4xl font-700 text-white mb-4">Built for Serious Investors</h2></div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="glass-card rounded-2xl p-6"><div class="w-12 h-12 bg-blue-600/15 border border-blue-500/20 rounded-xl flex items-center justify-center mb-4"><i class="fa fa-shield-halved text-blue-400 text-xl"></i></div><h3 class="font-display font-700 text-white text-base mb-2">Military-Grade Security</h3><p class="text-slate-400 text-sm leading-relaxed">256-bit AES encryption and cold wallet storage protect your assets at all times without compromise.</p></div>
+      <div class="glass-card rounded-2xl p-6"><div class="w-12 h-12 bg-emerald-600/15 border border-emerald-500/20 rounded-xl flex items-center justify-center mb-4"><i class="fa fa-bolt text-emerald-400 text-xl"></i></div><h3 class="font-display font-700 text-white text-base mb-2">Instant Deposits</h3><p class="text-slate-400 text-sm leading-relaxed">Fund your account in seconds using BTC, ETH, USDT, TON, or Solana with zero hidden fees ever.</p></div>
+      <div class="glass-card rounded-2xl p-6"><div class="w-12 h-12 bg-purple-600/15 border border-purple-500/20 rounded-xl flex items-center justify-center mb-4"><i class="fa fa-chart-line text-purple-400 text-xl"></i></div><h3 class="font-display font-700 text-white text-base mb-2">Automated Profits</h3><p class="text-slate-400 text-sm leading-relaxed">Smart contracts automatically calculate and credit your profits the moment your investment plan matures.</p></div>
+      <div class="glass-card rounded-2xl p-6"><div class="w-12 h-12 bg-yellow-600/15 border border-yellow-500/20 rounded-xl flex items-center justify-center mb-4"><i class="fa fa-users text-yellow-400 text-xl"></i></div><h3 class="font-display font-700 text-white text-base mb-2">Referral Rewards</h3><p class="text-slate-400 text-sm leading-relaxed">Earn 5% commission on every deposit made by users you refer. Unlimited earning potential.</p></div>
+      <div class="glass-card rounded-2xl p-6"><div class="w-12 h-12 bg-cyan-600/15 border border-cyan-500/20 rounded-xl flex items-center justify-center mb-4"><i class="fa fa-headset text-cyan-400 text-xl"></i></div><h3 class="font-display font-700 text-white text-base mb-2">24/7 Expert Support</h3><p class="text-slate-400 text-sm leading-relaxed">Dedicated account managers and live WhatsApp support. We respond within minutes, every time.</p></div>
+      <div class="glass-card rounded-2xl p-6"><div class="w-12 h-12 bg-red-600/15 border border-red-500/20 rounded-xl flex items-center justify-center mb-4"><i class="fa fa-certificate text-red-400 text-xl"></i></div><h3 class="font-display font-700 text-white text-base mb-2">Licensed &amp; Compliant</h3><p class="text-slate-400 text-sm leading-relaxed">Fully regulated investment platform with transparent audit trails and complete legal compliance.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="py-20 px-4" id="how-it-works">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14"><span class="section-label">SIMPLE PROCESS</span><h2 class="font-display text-3xl sm:text-4xl font-700 text-white mb-4">How It Works</h2><p class="text-slate-400 max-w-xl mx-auto text-sm">Get started in minutes. No complicated setup, no hidden fees.</p></div>
+    <div class="space-y-5">
+      <div class="flex gap-5 glass-card rounded-2xl p-6 items-start"><div class="w-14 h-14 shrink-0 rounded-full border-2 border-blue-500/40 bg-blue-600/10 flex items-center justify-center"><span class="font-display font-800 text-blue-400 text-xl">01</span></div><div><h3 class="font-display font-700 text-white text-lg mb-1.5">Create Your Account</h3><p class="text-slate-400 text-sm leading-relaxed">Register in under 2 minutes. Verify your email and complete your profile to unlock all features and higher investment tiers.</p></div></div>
+      <div class="flex gap-5 glass-card rounded-2xl p-6 items-start"><div class="w-14 h-14 shrink-0 rounded-full border-2 border-blue-500/40 bg-blue-600/10 flex items-center justify-center"><span class="font-display font-800 text-blue-400 text-xl">02</span></div><div><h3 class="font-display font-700 text-white text-lg mb-1.5">Fund Your Wallet</h3><p class="text-slate-400 text-sm leading-relaxed">Deposit cryptocurrency via BTC, ETH, USDT, TON, or Solana. Funds are secured and reflected in your dashboard after admin confirmation.</p></div></div>
+      <div class="flex gap-5 glass-card rounded-2xl p-6 items-start"><div class="w-14 h-14 shrink-0 rounded-full border-2 border-blue-500/40 bg-blue-600/10 flex items-center justify-center"><span class="font-display font-800 text-blue-400 text-xl">03</span></div><div><h3 class="font-display font-700 text-white text-lg mb-1.5">Choose an Investment Plan</h3><p class="text-slate-400 text-sm leading-relaxed">Browse our flexible plans from Starter to Diamond. Select one that matches your goals, budget, and preferred ROI timeline.</p></div></div>
+      <div class="flex gap-5 glass-card rounded-2xl p-6 items-start"><div class="w-14 h-14 shrink-0 rounded-full border-2 border-blue-500/40 bg-blue-600/10 flex items-center justify-center"><span class="font-display font-800 text-blue-400 text-xl">04</span></div><div><h3 class="font-display font-700 text-white text-lg mb-1.5">Earn Automatically</h3><p class="text-slate-400 text-sm leading-relaxed">Track your growth in real time. Profits are automatically credited to your wallet when your plan reaches maturity.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS SLIDER -->
+<section class="py-12 bg-navy-900/40 border-y border-blue-900/20 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-4 mb-8 text-center"><span class="section-label">TRUSTED BY</span><h2 class="font-display text-2xl font-700 text-white">Industry Partners &amp; Integrations</h2></div>
+  <div class="overflow-hidden">
+    <div class="partners-track">
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-yellow-500/20 rounded-full flex items-center justify-center border border-yellow-500/20"><i class="fa fa-coins text-yellow-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Binance</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-blue-500/20 rounded-full flex items-center justify-center border border-blue-500/20"><i class="fa fa-circle text-blue-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Coinbase</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-purple-500/20 rounded-full flex items-center justify-center border border-purple-500/20"><i class="fa fa-bolt text-purple-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Kraken</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-green-500/20 rounded-full flex items-center justify-center border border-green-500/20"><i class="fa fa-chart-line text-green-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">OKX</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-cyan-500/20 rounded-full flex items-center justify-center border border-cyan-500/20"><i class="fa fa-gem text-cyan-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Bybit</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-orange-500/20 rounded-full flex items-center justify-center border border-orange-500/20"><i class="fa fa-fire text-orange-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">KuCoin</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-red-500/20 rounded-full flex items-center justify-center border border-red-500/20"><i class="fa fa-shield text-red-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Bitfinex</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-indigo-500/20 rounded-full flex items-center justify-center border border-indigo-500/20"><i class="fa fa-star text-indigo-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Gemini</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-teal-500/20 rounded-full flex items-center justify-center border border-teal-500/20"><i class="fa fa-globe text-teal-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Gate.io</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-pink-500/20 rounded-full flex items-center justify-center border border-pink-500/20"><i class="fa fa-diamond text-pink-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Huobi</span></div>
+      <!-- Repeat for seamless loop -->
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-yellow-500/20 rounded-full flex items-center justify-center border border-yellow-500/20"><i class="fa fa-coins text-yellow-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Binance</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-blue-500/20 rounded-full flex items-center justify-center border border-blue-500/20"><i class="fa fa-circle text-blue-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Coinbase</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-purple-500/20 rounded-full flex items-center justify-center border border-purple-500/20"><i class="fa fa-bolt text-purple-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Kraken</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-green-500/20 rounded-full flex items-center justify-center border border-green-500/20"><i class="fa fa-chart-line text-green-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">OKX</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-cyan-500/20 rounded-full flex items-center justify-center border border-cyan-500/20"><i class="fa fa-gem text-cyan-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Bybit</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-orange-500/20 rounded-full flex items-center justify-center border border-orange-500/20"><i class="fa fa-fire text-orange-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">KuCoin</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-red-500/20 rounded-full flex items-center justify-center border border-red-500/20"><i class="fa fa-shield text-red-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Bitfinex</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-indigo-500/20 rounded-full flex items-center justify-center border border-indigo-500/20"><i class="fa fa-star text-indigo-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Gemini</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-teal-500/20 rounded-full flex items-center justify-center border border-teal-500/20"><i class="fa fa-globe text-teal-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Gate.io</span></div>
+      <div class="shrink-0 mx-10 flex items-center gap-2.5 opacity-40 hover:opacity-80 transition-opacity"><div class="w-9 h-9 bg-pink-500/20 rounded-full flex items-center justify-center border border-pink-500/20"><i class="fa fa-diamond text-pink-400 text-xs"></i></div><span class="text-slate-300 font-semibold text-sm whitespace-nowrap">Huobi</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-20 px-4" id="testimonials">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14"><span class="section-label">TESTIMONIALS</span><h2 class="font-display text-3xl sm:text-4xl font-700 text-white mb-4">What Our Investors Say</h2></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for t in testimonials %}
+      <div class="glass-card rounded-2xl p-6">
+        <div class="flex text-yellow-400 text-sm mb-4">{% for i in "12345" %}<i class="fa fa-star {% if forloop.counter > t.rating %}opacity-25{% endif %}"></i>{% endfor %}</div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-5 italic">"{{ t.message }}"</p>
+        <div class="flex items-center gap-3"><div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white font-700 text-sm shrink-0">{{ t.name|first }}</div><div><p class="text-white font-semibold text-sm">{{ t.name }}</p><p class="text-slate-500 text-xs">{{ t.country }}</p></div></div>
+      </div>
+      {% empty %}
+      <div class="glass-card rounded-2xl p-6"><div class="flex text-yellow-400 text-sm mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><p class="text-slate-300 text-sm leading-relaxed mb-5 italic">"I've been with Hordstake for 6 months and the returns are absolutely consistent. Withdrew $12,000 last month with zero issues. Highly recommend to everyone!"</p><div class="flex items-center gap-3"><div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white font-700 text-sm">J</div><div><p class="text-white font-semibold text-sm">James K.</p><p class="text-slate-500 text-xs">United States</p></div></div></div>
+      <div class="glass-card rounded-2xl p-6"><div class="flex text-yellow-400 text-sm mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><p class="text-slate-300 text-sm leading-relaxed mb-5 italic">"The automated profit system is brilliant. Gold Plan profits appeared exactly on schedule. The support team responds within minutes. Truly a world-class platform."</p><div class="flex items-center gap-3"><div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-700 rounded-full flex items-center justify-center text-white font-700 text-sm">M</div><div><p class="text-white font-semibold text-sm">Maria S.</p><p class="text-slate-500 text-xs">Germany</p></div></div></div>
+      <div class="glass-card rounded-2xl p-6"><div class="flex text-yellow-400 text-sm mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><p class="text-slate-300 text-sm leading-relaxed mb-5 italic">"Diamond plan investor here. 35% ROI in 90 days is completely real. I've already reinvested twice. Hordstake is the most legitimate crypto platform I've ever used."</p><div class="flex items-center gap-3"><div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center text-white font-700 text-sm">A</div><div><p class="text-white font-semibold text-sm">Ahmed R.</p><p class="text-slate-500 text-xs">United Arab Emirates</p></div></div></div>
+      <div class="glass-card rounded-2xl p-6"><div class="flex text-yellow-400 text-sm mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><p class="text-slate-300 text-sm leading-relaxed mb-5 italic">"Started cautiously with $500 on the Starter plan just to test. Got my exact returns. Now I'm investing $8,000 on the Silver plan. Very trustworthy platform!"</p><div class="flex items-center gap-3"><div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-full flex items-center justify-center text-white font-700 text-sm">S</div><div><p class="text-white font-semibold text-sm">Sophie L.</p><p class="text-slate-500 text-xs">Canada</p></div></div></div>
+      <div class="glass-card rounded-2xl p-6"><div class="flex text-yellow-400 text-sm mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><p class="text-slate-300 text-sm leading-relaxed mb-5 italic">"The referral program earned me an extra $2,000 this month. Best passive income stream I've found in the entire crypto space. Share your link and get paid!"</p><div class="flex items-center gap-3"><div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-full flex items-center justify-center text-white font-700 text-sm">C</div><div><p class="text-white font-semibold text-sm">Carlos M.</p><p class="text-slate-500 text-xs">Brazil</p></div></div></div>
+      <div class="glass-card rounded-2xl p-6"><div class="flex text-yellow-400 text-sm mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><p class="text-slate-300 text-sm leading-relaxed mb-5 italic">"Fast withdrawals, completely transparent, and amazing support available any time. Hordstake completely changed my financial situation. I refer everyone I know!"</p><div class="flex items-center gap-3"><div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-700 rounded-full flex items-center justify-center text-white font-700 text-sm">A</div><div><p class="text-white font-semibold text-sm">Aisha T.</p><p class="text-slate-500 text-xs">Nigeria</p></div></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-20 px-4 bg-navy-900/40 border-y border-blue-900/20" id="faq">
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-12"><span class="section-label">FAQ</span><h2 class="font-display text-3xl sm:text-4xl font-700 text-white mb-4">Frequently Asked Questions</h2></div>
+    <div class="space-y-3" id="faqContainer">
+      {% for faq in faqs %}
+      <div class="glass-card rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left gap-4"><span class="font-semibold text-white text-sm">{{ faq.question }}</span><i class="fa fa-chevron-down text-blue-400 text-xs transition-transform duration-200 shrink-0"></i></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">{{ faq.answer }}</p></div></div>
+      {% empty %}
+      <div class="glass-card rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left gap-4"><span class="font-semibold text-white text-sm">How do I deposit funds into my account?</span><i class="fa fa-chevron-down text-blue-400 text-xs transition-transform duration-200 shrink-0"></i></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">Go to Dashboard &#8594; Deposit. Select your cryptocurrency (BTC, ETH, USDT, TON, or SOL), copy the wallet address displayed, send your funds, upload your payment proof, and submit. Your deposit will be reviewed and approved within 1&#8211;3 hours.</p></div></div>
+      <div class="glass-card rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left gap-4"><span class="font-semibold text-white text-sm">When will I receive my investment profits?</span><i class="fa fa-chevron-down text-blue-400 text-xs transition-transform duration-200 shrink-0"></i></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">Profits are automatically credited to your wallet balance when your investment plan matures. Timeline depends on your plan: 5 days (Starter), 14 days (Silver), 30 days (Gold), 60 days (Platinum), 90 days (Diamond). You'll receive a notification when profits land.</p></div></div>
+      <div class="glass-card rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left gap-4"><span class="font-semibold text-white text-sm">Is my investment and personal data secure?</span><i class="fa fa-chevron-down text-blue-400 text-xs transition-transform duration-200 shrink-0"></i></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">Absolutely. We use 256-bit AES encryption, cold wallet storage for client reserves, SSL certificates on all connections, and multi-factor authentication options. Your assets and personal data are protected by institutional-grade security systems.</p></div></div>
+      <div class="glass-card rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left gap-4"><span class="font-semibold text-white text-sm">What is the minimum investment amount?</span><i class="fa fa-chevron-down text-blue-400 text-xs transition-transform duration-200 shrink-0"></i></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">You can start with as little as $50 on our Starter Plan. Each plan has specific minimum and maximum deposit limits. Higher-tier plans offer greater ROI percentages for larger investments.</p></div></div>
+      <div class="glass-card rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left gap-4"><span class="font-semibold text-white text-sm">How do I withdraw my earnings?</span><i class="fa fa-chevron-down text-blue-400 text-xs transition-transform duration-200 shrink-0"></i></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">Go to Dashboard &#8594; Withdraw. Enter the amount, select your preferred cryptocurrency, and provide your wallet address. All withdrawals are processed within 24 hours and sent directly to your provided wallet. No lock-in periods on your balance.</p></div></div>
+      <div class="glass-card rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left gap-4"><span class="font-semibold text-white text-sm">How does the referral program work?</span><i class="fa fa-chevron-down text-blue-400 text-xs transition-transform duration-200 shrink-0"></i></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">Share your unique referral link from your dashboard. Every time someone registers using your link and makes a deposit, you earn 5% commission automatically credited to your wallet. There is no limit on referral earnings &#8212; the more you refer, the more you earn.</p></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="py-16 px-4">
+  <div class="max-w-2xl mx-auto text-center">
+    <div class="glass-card rounded-2xl p-8 sm:p-10">
+      <div class="w-14 h-14 bg-blue-600/20 rounded-2xl border border-blue-500/20 flex items-center justify-center mx-auto mb-5"><i class="fa fa-envelope text-blue-400 text-2xl"></i></div>
+      <h2 class="font-display text-2xl sm:text-3xl font-700 text-white mb-3">Stay Ahead of the Market</h2>
+      <p class="text-slate-400 text-sm mb-6 leading-relaxed">Get market insights, investment tips, and Hordstake updates delivered to your inbox. Join 8,000+ subscribers.</p>
+      <form method="post" action="/newsletter/" class="flex flex-col sm:flex-row gap-3">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Enter your email address" required class="form-input flex-1 text-sm">
+        <button type="submit" class="btn-primary px-6 py-3 shrink-0 justify-center text-sm"><i class="fa fa-paper-plane"></i> Subscribe</button>
+      </form>
+      <p class="text-slate-600 text-xs mt-4">No spam, ever. Unsubscribe with one click at any time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-navy-900 border-t border-blue-900/30 pt-14 pb-6 px-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+      <div>
+        <div class="flex items-center gap-2.5 mb-5"><div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center"><i class="fa fa-bolt text-white text-sm"></i></div><span class="font-display font-800 text-lg text-white">HORDSTAKE</span></div>
+        <p class="text-slate-400 text-sm leading-relaxed mb-5">The world's most trusted crypto investment platform. Automated profits, transparent operations, and institutional-grade security for every investor.</p>
+        <div class="flex gap-2.5">
+          <a href="#" class="w-9 h-9 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-blue-400 transition-colors"><i class="fab fa-twitter text-xs"></i></a>
+          <a href="#" class="w-9 h-9 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-blue-400 transition-colors"><i class="fab fa-telegram text-xs"></i></a>
+          <a href="#" class="w-9 h-9 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-blue-400 transition-colors"><i class="fab fa-instagram text-xs"></i></a>
+          <a href="#" class="w-9 h-9 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-blue-400 transition-colors"><i class="fab fa-facebook text-xs"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-display font-700 text-white text-sm mb-4 uppercase tracking-wider">Quick Links</h4>
+        <ul class="space-y-2.5 text-sm text-slate-400">
+          <li><a href="#plans" class="hover:text-blue-400 transition-colors">Investment Plans</a></li>
+          <li><a href="#features" class="hover:text-blue-400 transition-colors">Features</a></li>
+          <li><a href="#how-it-works" class="hover:text-blue-400 transition-colors">How It Works</a></li>
+          <li><a href="#testimonials" class="hover:text-blue-400 transition-colors">Testimonials</a></li>
+          <li><a href="/auth/register/" class="hover:text-blue-400 transition-colors">Create Account</a></li>
+          <li><a href="/auth/login/" class="hover:text-blue-400 transition-colors">Sign In</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-display font-700 text-white text-sm mb-4 uppercase tracking-wider">Legal</h4>
+        <ul class="space-y-2.5 text-sm text-slate-400">
+          <li><a href="#" class="hover:text-blue-400 transition-colors">Terms of Service</a></li>
+          <li><a href="#" class="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+          <li><a href="#" class="hover:text-blue-400 transition-colors">AML Policy</a></li>
+          <li><a href="#" class="hover:text-blue-400 transition-colors">Risk Disclaimer</a></li>
+          <li><a href="#" class="hover:text-blue-400 transition-colors">Cookie Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-display font-700 text-white text-sm mb-4 uppercase tracking-wider">Contact Us</h4>
+        <ul class="space-y-3 text-sm text-slate-400 mb-5">
+          <li class="flex items-center gap-2.5"><i class="fa fa-envelope text-blue-400 w-4 text-center text-xs shrink-0"></i>support@hordstake.com</li>
+          <li class="flex items-center gap-2.5"><i class="fab fa-whatsapp text-emerald-400 w-4 text-center text-xs shrink-0"></i>+1 (555) 000-0000</li>
+          <li class="flex items-center gap-2.5"><i class="fa fa-clock text-blue-400 w-4 text-center text-xs shrink-0"></i>24/7 Live Support</li>
+          <li class="flex items-center gap-2.5"><i class="fa fa-globe text-blue-400 w-4 text-center text-xs shrink-0"></i>150+ Countries Served</li>
+        </ul>
+        <a href="https://wa.me/{{ site_settings.whatsapp_number|default:'+1234567890' }}" target="_blank" class="btn-primary text-sm px-4 py-2.5 w-full justify-center"><i class="fab fa-whatsapp"></i> WhatsApp Support</a>
+      </div>
+    </div>
+    <div class="border-t border-blue-900/30 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p class="text-slate-600 text-xs">&copy; 2025 Hordstake. All rights reserved. Crypto investment carries inherent risk.</p>
+      <div class="flex items-center gap-5 text-slate-600 text-xs">
+        <span class="flex items-center gap-1.5"><i class="fa fa-lock text-blue-600 text-xs"></i>SSL Secured</span>
+        <span class="flex items-center gap-1.5"><i class="fa fa-shield text-blue-600 text-xs"></i>Funds Protected</span>
+        <span class="flex items-center gap-1.5"><i class="fa fa-certificate text-blue-600 text-xs"></i>Licensed</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Carousel
+const TOTAL=8;let cur=0;
+const dotsEl=document.getElementById('carouselDots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('button');d.className=`rounded-full transition-all duration-300 ${i===0?'w-6 h-2 bg-blue-500':'w-2 h-2 bg-slate-700'}`;d.onclick=()=>goTo(i);dotsEl.appendChild(d);}
+function goTo(n){document.getElementById('slide'+cur).classList.replace('opacity-100','opacity-0');document.getElementById('slide'+cur).classList.add('pointer-events-none');cur=(n+TOTAL)%TOTAL;document.getElementById('slide'+cur).classList.replace('opacity-0','opacity-100');document.getElementById('slide'+cur).classList.remove('pointer-events-none');dotsEl.querySelectorAll('button').forEach((d,i)=>{d.className=`rounded-full transition-all duration-300 ${i===cur?'w-6 h-2 bg-blue-500':'w-2 h-2 bg-slate-700'}`});}
+function nextSlide(){goTo(cur+1);}function prevSlide(){goTo(cur-1);}
+setInterval(nextSlide,5500);
+// FAQ
+function toggleFaq(btn){const a=btn.nextElementSibling;const ic=btn.querySelector('i');const isOpen=!a.classList.contains('hidden');document.querySelectorAll('.faq-answer').forEach(x=>x.classList.add('hidden'));document.querySelectorAll('#faqContainer button i').forEach(x=>x.style.transform='');if(!isOpen){a.classList.remove('hidden');ic.style.transform='rotate(180deg)';}}
+// Mobile menu
+document.getElementById('mobileMenuBtn').onclick=()=>document.getElementById('mobileMenu').classList.toggle('hidden');
+// Live activity feed
+const acts=['Someone from Germany just invested $5,000','A user from USA withdrew $12,000 successfully','New investor from Japan joined Hordstake','Someone from UK invested $2,500 in Silver Plan','A UAE investor earned $8,000 profit today','Brazil investor completed their Gold Plan','Singapore user invested $15,000 in Platinum'];
+let ai=0;setInterval(()=>{const el=document.getElementById('liveActivity');if(el){el.textContent=acts[ai%acts.length];ai++;}},6500);
+</script>
+{% endblock %}

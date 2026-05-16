@@ -1,0 +1,72 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}Withdrawal Management{% endblock %}
+{% block admin_content %}
+<div class="glass-card overflow-hidden">
+  <div class="p-5 border-b border-blue-500/10">
+    <h3 class="text-white font-semibold">All Withdrawal Requests ({{ withdrawals.count }})</h3>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="bg-navy-800">
+        <tr class="text-slate-500 text-xs uppercase tracking-wider">
+          <th class="py-3 px-5 text-left">User</th>
+          <th class="py-3 px-3 text-left hidden sm:table-cell">Date</th>
+          <th class="py-3 px-3 text-left hidden md:table-cell">Wallet Address</th>
+          <th class="py-3 px-3 text-right">Amount</th>
+          <th class="py-3 px-3 text-center">Status</th>
+          <th class="py-3 px-5 text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-blue-500/5">
+        {% for w in withdrawals %}
+        <tr class="hover:bg-blue-500/5 transition-colors">
+          <td class="py-3 px-5">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">{{ w.user.email|first|upper }}</div>
+              <div>
+                <p class="text-white font-medium text-sm">{{ w.user.get_full_name|default:w.user.username }}</p>
+                <p class="text-slate-500 text-xs">{{ w.user.email }}</p>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-3 text-slate-400 text-xs hidden sm:table-cell">{{ w.created_at|date:"M d, Y H:i" }}</td>
+          <td class="py-3 px-3 hidden md:table-cell">
+            <span class="text-slate-400 font-mono text-xs">{{ w.wallet_address|truncatechars:20 }}</span>
+          </td>
+          <td class="py-3 px-3 text-right text-red-400 font-bold">${{ w.amount|floatformat:2 }}</td>
+          <td class="py-3 px-3 text-center">
+            <span class="{% if w.status == 'completed' %}badge-success{% elif w.status == 'pending' %}badge-pending{% else %}badge-danger{% endif %}">{{ w.status|capfirst }}</span>
+          </td>
+          <td class="py-3 px-5">
+            <div class="flex gap-2 justify-end">
+              {% if w.status == 'pending' %}
+              <form method="POST" style="display:inline">
+                {% csrf_token %}
+                <input type="hidden" name="txn_id" value="{{ w.id }}"/>
+                <input type="hidden" name="action" value="approve"/>
+                <button type="submit" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 text-xs py-1.5 px-3 rounded-lg font-medium">
+                  <i class="fa fa-check mr-1"></i>Approve
+                </button>
+              </form>
+              <form method="POST" style="display:inline">
+                {% csrf_token %}
+                <input type="hidden" name="txn_id" value="{{ w.id }}"/>
+                <input type="hidden" name="action" value="reject"/>
+                <button type="submit" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 text-xs py-1.5 px-3 rounded-lg font-medium">
+                  <i class="fa fa-times mr-1"></i>Reject &amp; Refund
+                </button>
+              </form>
+              {% else %}
+              <span class="text-slate-600 text-xs">Processed</span>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="py-16 text-center text-slate-500">No withdrawal requests yet</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

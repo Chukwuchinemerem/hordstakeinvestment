@@ -1,0 +1,45 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block page_title %}Transaction History{% endblock %}
+{% block dashboard_content %}
+<div class="glass-card overflow-hidden">
+  <div class="p-5 border-b border-blue-500/10 flex items-center justify-between">
+    <h3 class="text-white font-semibold">All Transactions</h3>
+    <span class="text-slate-500 text-sm">{{ transactions.count }} total</span>
+  </div>
+  {% if transactions %}
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="bg-navy-800"><tr class="text-slate-500 text-xs uppercase tracking-wider">
+        <th class="py-3 px-5 text-left">Transaction</th>
+        <th class="py-3 px-3 text-left hidden sm:table-cell">Date</th>
+        <th class="py-3 px-3 text-left hidden md:table-cell">Crypto</th>
+        <th class="py-3 px-3 text-right">Amount</th>
+        <th class="py-3 px-5 text-right">Status</th>
+      </tr></thead>
+      <tbody class="divide-y divide-blue-500/5">
+        {% for t in transactions %}
+        <tr class="hover:bg-blue-500/5 transition-colors">
+          <td class="py-3.5 px-5">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 {% if t.transaction_type == 'deposit' %}bg-emerald-500/15{% elif t.transaction_type == 'withdrawal' %}bg-red-500/15{% elif t.transaction_type == 'profit' %}bg-yellow-500/15{% else %}bg-blue-500/15{% endif %}">
+                <i class="fa {% if t.transaction_type == 'deposit' %}fa-arrow-down text-emerald-400{% elif t.transaction_type == 'withdrawal' %}fa-arrow-up text-red-400{% elif t.transaction_type == 'profit' %}fa-coins text-yellow-400{% else %}fa-exchange-alt text-blue-400{% endif %} text-xs"></i>
+              </div>
+              <div><p class="text-white font-medium capitalize">{{ t.transaction_type }}</p><p class="text-slate-500 text-xs">{{ t.description|truncatechars:30|default:"—" }}</p></div>
+            </div>
+          </td>
+          <td class="py-3.5 px-3 text-slate-400 text-xs hidden sm:table-cell">{{ t.created_at|date:"M d, Y H:i" }}</td>
+          <td class="py-3.5 px-3 hidden md:table-cell"><span class="text-slate-300 text-xs">{{ t.crypto_currency|default:"—" }}</span></td>
+          <td class="py-3.5 px-3 text-right font-semibold {% if t.transaction_type in 'deposit,profit,referral,bonus' %}text-emerald-400{% elif t.transaction_type == 'withdrawal' %}text-red-400{% else %}text-white{% endif %}">
+            {% if t.transaction_type == 'withdrawal' %}-{% endif %}${{ t.amount|floatformat:2 }}
+          </td>
+          <td class="py-3.5 px-5 text-right"><span class="{% if t.status == 'completed' %}badge-success{% elif t.status == 'pending' %}badge-pending{% else %}badge-danger{% endif %}">{{ t.status|capfirst }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="py-20 text-center"><i class="fa fa-receipt text-blue-400 text-4xl mb-4 block opacity-40"></i><p class="text-slate-500">No transactions yet</p></div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% load humanize %}
+{% block admin_title %}User: {{ profile_user.email }}{% endblock %}
+{% block admin_content %}
+<div class="max-w-4xl space-y-6">
+  <!-- Info Bar -->
+  <div class="glass-card p-5 flex flex-wrap items-center gap-4">
+    <div class="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl shrink-0">
+      {{ profile_user.email|first|upper }}
+    </div>
+    <div class="flex-1">
+      <p class="text-white font-display font-bold text-xl">{{ profile_user.get_full_name|default:profile_user.username }}</p>
+      <p class="text-slate-400 text-sm">{{ profile_user.email }} · Joined {{ profile_user.date_joined|date:"M d, Y" }}</p>
+    </div>
+    <div class="flex gap-2 flex-wrap">
+      {% if profile_user.is_banned %}<span class="badge-danger">Banned</span>{% endif %}
+      {% if profile_user.is_verified %}<span class="badge-success">Verified</span>{% else %}<span class="badge-pending">Unverified</span>{% endif %}
+      {% if profile_user.is_staff %}<span class="badge-live">Staff</span>{% endif %}
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <div class="stat-card"><p class="text-slate-400 text-xs mb-2">Wallet Balance</p><p class="text-white font-bold text-xl">${{ profile_user.wallet_balance|floatformat:2|intcomma }}</p></div>
+    <div class="stat-card"><p class="text-slate-400 text-xs mb-2">Total Deposited</p><p class="text-white font-bold text-xl">${{ profile_user.total_deposited|floatformat:2|intcomma }}</p></div>
+    <div class="stat-card"><p class="text-slate-400 text-xs mb-2">Total Profit</p><p class="text-emerald-400 font-bold text-xl">${{ profile_user.total_profit|floatformat:2|intcomma }}</p></div>
+    <div class="stat-card"><p class="text-slate-400 text-xs mb-2">Total Withdrawn</p><p class="text-white font-bold text-xl">${{ profile_user.total_withdrawn|floatformat:2|intcomma }}</p></div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Adjust Balance -->
+    <div class="glass-card p-6">
+      <h3 class="text-white font-semibold mb-4">Adjust Balance</h3>
+      <form method="POST" class="space-y-3">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="adjust_balance"/>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Amount (use negative to deduct)</label>
+          <div class="relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+            <input type="number" name="amount" placeholder="100.00 or -100.00" step="0.01" class="form-input pl-8" required/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs font-medium mb-1.5">Note / Reason</label>
+          <input type="text" name="note" placeholder="Admin note for this adjustment" class="form-input"/>
+        </div>
+        <button type="submit" class="btn-primary w-full justify-center">Apply Balance Adjustment</button>
+      </form>
+    </div>
+
+    <!-- User Actions -->
+    <div class="glass-card p-6">
+      <h3 class="text-white font-semibold mb-4">Account Actions</h3>
+      <div class="space-y-3">
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="ban"/>
+          <button type="submit" class="w-full py-2.5 px-4 rounded-xl border font-medium text-sm transition-all {% if profile_user.is_banned %}border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10{% else %}border-red-500/30 text-red-400 hover:bg-red-500/10{% endif %}">
+            <i class="fa {% if profile_user.is_banned %}fa-user-check{% else %}fa-user-slash{% endif %} mr-2"></i>
+            {% if profile_user.is_banned %}Unban User{% else %}Ban User{% endif %}
+          </button>
+        </form>
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="verify"/>
+          <button type="submit" class="w-full py-2.5 px-4 rounded-xl border border-blue-500/30 text-blue-400 hover:bg-blue-500/10 font-medium text-sm transition-all">
+            <i class="fa fa-shield-check mr-2"></i>Mark as Verified
+          </button>
+        </form>
+        <div class="border-t border-blue-500/10 pt-3 space-y-2 text-sm">
+          <div class="flex justify-between"><span class="text-slate-500">Referral Code</span><span class="text-blue-400 font-mono text-xs">{{ profile_user.referral_code }}</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">Referral Earnings</span><span class="text-emerald-400">${{ profile_user.referral_earnings|floatformat:2 }}</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">Country</span><span class="text-slate-200">{{ profile_user.country|default:"—" }}</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">Phone</span><span class="text-slate-200">{{ profile_user.phone|default:"—" }}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Investments -->
+  {% if investments %}
+  <div class="glass-card overflow-hidden">
+    <div class="px-5 py-4 border-b border-blue-500/10"><h3 class="text-white font-semibold">Investments</h3></div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-navy-800"><tr class="text-slate-500 text-xs uppercase tracking-wider">
+          <th class="py-2.5 px-5 text-left">Plan</th><th class="py-2.5 px-3 text-right">Amount</th>
+          <th class="py-2.5 px-3 text-right hidden sm:table-cell">Profit</th>
+          <th class="py-2.5 px-3 text-center hidden md:table-cell">Progress</th>
+          <th class="py-2.5 px-5 text-center">Status</th>
+        </tr></thead>
+        <tbody class="divide-y divide-blue-500/5">
+          {% for inv in investments %}
+          <tr class="hover:bg-blue-500/5">
+            <td class="py-2.5 px-5 text-white">{{ inv.plan.name|default:"—" }}</td>
+            <td class="py-2.5 px-3 text-right text-white font-bold">${{ inv.amount|floatformat:2 }}</td>
+            <td class="py-2.5 px-3 text-right text-emerald-400 hidden sm:table-cell">+${{ inv.get_expected_profit|floatformat:2 }}</td>
+            <td class="py-2.5 px-3 hidden md:table-cell">
+              <div class="flex items-center gap-2">
+                <div class="flex-1 bg-navy-700 rounded-full h-1.5"><div class="bg-blue-500 h-1.5 rounded-full" style="width:{{ inv.get_progress_percent }}%"></div></div>
+                <span class="text-slate-500 text-xs">{{ inv.get_progress_percent }}%</span>
+              </div>
+            </td>
+            <td class="py-2.5 px-5 text-center"><span class="{% if inv.status == 'active' %}badge-live{% elif inv.status == 'completed' %}badge-success{% else %}badge-danger{% endif %}">{{ inv.status }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Transaction history -->
+  <div class="glass-card overflow-hidden">
+    <div class="px-5 py-4 border-b border-blue-500/10"><h3 class="text-white font-semibold">Recent Transactions</h3></div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-navy-800"><tr class="text-slate-500 text-xs uppercase tracking-wider">
+          <th class="py-2.5 px-5 text-left">Type</th>
+          <th class="py-2.5 px-3 text-left hidden sm:table-cell">Date</th>
+          <th class="py-2.5 px-3 text-left hidden md:table-cell">Description</th>
+          <th class="py-2.5 px-3 text-right">Amount</th>
+          <th class="py-2.5 px-5 text-center">Status</th>
+        </tr></thead>
+        <tbody class="divide-y divide-blue-500/5">
+          {% for t in transactions %}
+          <tr class="hover:bg-blue-500/5">
+            <td class="py-2.5 px-5 text-white capitalize">{{ t.transaction_type }}</td>
+            <td class="py-2.5 px-3 text-slate-400 text-xs hidden sm:table-cell">{{ t.created_at|date:"M d, Y H:i" }}</td>
+            <td class="py-2.5 px-3 text-slate-400 text-xs hidden md:table-cell">{{ t.description|truncatechars:30|default:"—" }}</td>
+            <td class="py-2.5 px-3 text-right font-semibold {% if t.transaction_type in 'deposit,profit,referral' %}text-emerald-400{% else %}text-white{% endif %}">${{ t.amount|floatformat:2 }}</td>
+            <td class="py-2.5 px-5 text-center"><span class="{% if t.status == 'completed' %}badge-success{% elif t.status == 'pending' %}badge-pending{% else %}badge-danger{% endif %}">{{ t.status }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

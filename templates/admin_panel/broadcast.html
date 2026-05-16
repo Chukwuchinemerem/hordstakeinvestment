@@ -1,0 +1,35 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}Broadcast Message{% endblock %}
+{% block admin_content %}
+<div class="max-w-2xl space-y-6">
+  <div class="glass-card p-6">
+    <h3 class="text-white font-semibold text-lg mb-2">Send Broadcast Notification</h3>
+    <p class="text-slate-400 text-sm mb-6">Send a notification to all users or a specific group. They will receive it in their notification dashboard.</p>
+    <form method="POST" class="space-y-4">
+      {% csrf_token %}
+      <div>
+        <label class="block text-slate-300 text-sm font-medium mb-2">Recipients</label>
+        <select name="target" class="form-select">
+          <option value="all">All Users</option>
+          <option value="verified">Verified Users Only</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-sm font-medium mb-2">Notification Title</label>
+        <input type="text" name="title" placeholder="e.g. Platform Maintenance Notice" class="form-input" required maxlength="200"/>
+      </div>
+      <div>
+        <label class="block text-slate-300 text-sm font-medium mb-2">Message</label>
+        <textarea name="message" rows="5" placeholder="Type your broadcast message here..." class="form-input" required></textarea>
+      </div>
+      <div class="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
+        <p class="text-yellow-300 text-sm font-semibold mb-1"><i class="fa fa-triangle-exclamation mr-1"></i>This will send to ALL selected users</p>
+        <p class="text-slate-400 text-xs">Users will see this as a popup notification the next time they visit their dashboard.</p>
+      </div>
+      <button type="submit" class="btn-primary w-full justify-center py-3.5">
+        <i class="fa fa-bullhorn mr-2"></i>Send Broadcast
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

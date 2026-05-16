@@ -1,0 +1,34 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}Active Investments{% endblock %}
+{% block admin_content %}
+<div class="glass-card overflow-hidden">
+  <div class="p-5 border-b border-blue-500/10 flex items-center justify-between">
+    <h3 class="text-white font-semibold">All Investments ({{ investments.count }})</h3>
+    <form action="/admin-panel/process-profits/" method="POST">{% csrf_token %}<button type="submit" class="btn-primary text-xs py-2 px-4"><i class="fa fa-rotate"></i> Process Profits</button></form>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="bg-navy-800"><tr class="text-slate-500 text-xs uppercase tracking-wider">
+        <th class="py-3 px-5 text-left">User</th><th class="py-3 px-3 text-left">Plan</th>
+        <th class="py-3 px-3 text-right">Amount</th><th class="py-3 px-3 text-right hidden sm:table-cell">Expected Profit</th>
+        <th class="py-3 px-3 text-center hidden md:table-cell">Progress</th><th class="py-3 px-5 text-center">Status</th>
+      </tr></thead>
+      <tbody class="divide-y divide-blue-500/5">
+        {% for inv in investments %}
+        <tr class="hover:bg-blue-500/5">
+          <td class="py-3 px-5"><p class="text-white font-medium text-sm">{{ inv.user.get_full_name|default:inv.user.username }}</p><p class="text-slate-500 text-xs">{{ inv.user.email }}</p></td>
+          <td class="py-3 px-3 text-slate-300 text-sm">{{ inv.plan.name|default:"—" }}</td>
+          <td class="py-3 px-3 text-right text-white font-bold">${{ inv.amount|floatformat:2 }}</td>
+          <td class="py-3 px-3 text-right text-emerald-400 font-semibold hidden sm:table-cell">+${{ inv.get_expected_profit|floatformat:2 }}</td>
+          <td class="py-3 px-3 hidden md:table-cell">
+            <div class="flex items-center gap-2"><div class="flex-1 bg-navy-700 rounded-full h-1.5"><div class="bg-blue-500 h-1.5 rounded-full" style="width:{{ inv.get_progress_percent }}%"></div></div>
+            <span class="text-slate-500 text-xs shrink-0">{{ inv.get_progress_percent }}%</span></div>
+          </td>
+          <td class="py-3 px-5 text-center"><span class="{% if inv.status == 'active' %}badge-live{% elif inv.status == 'completed' %}badge-success{% else %}badge-danger{% endif %}">{{ inv.status }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
